@@ -6,6 +6,10 @@ const BookSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "users"
   },
+  image: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true

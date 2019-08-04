@@ -36,6 +36,7 @@ router.post(
       status: req.body.status,
       allowComments: allowComments,
       genre: genre,
+      image: "noimage",
       bookdesc: req.body.bookdesc,
       user: req.user.id
     });
@@ -75,7 +76,14 @@ router.post(
             }
           }
         )
-          .then(book => res.json(book))
+          .then(book =>
+            Book.findById(req.params.id)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          )
           .catch(err => {
             res.status(404).json({ nobookfound: "Book not found" });
           });
@@ -221,7 +229,14 @@ router.post(
           chapter.title = req.body.title;
           chapter.body = req.body.body;
           book.chapters[chapterIndex] = chapter;
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ nochapterfound: "Chapter not found" });
         }
@@ -299,7 +314,14 @@ router.post(
           character.behaviour = req.body.behaviour;
           character.about = req.body.about;
           book.characters[characterIndex] = character;
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ nocharacterfound: "character not found" });
         }
@@ -364,7 +386,14 @@ router.post(
         if (plotlineIndex !== -1) {
           const storyline = book.storyline[plotlineIndex];
           storyline.plotline = req.body.plotline;
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ noplotlinefound: "plotline not found" });
         }
@@ -542,7 +571,14 @@ router.post(
           chapter.title = req.body.title;
           chapter.description = req.body.description;
           book.chapterdescription[chapterdescIndex] = chapter;
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ nochapterfound: "Chapter not found" });
         }

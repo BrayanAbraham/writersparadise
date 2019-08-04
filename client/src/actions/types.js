@@ -6,3 +6,4 @@ export const GET_BOOKS = "GET_BOOKS";
 export const GET_BOOK = "GET_BOOK";
 export const ADD_BOOK = "ADD_BOOK";
 export const DELETE_BOOK = "DELETE_BOOK";
+export const BOOK_NOT_FOUND = "BOOK_NOT_FOUND";

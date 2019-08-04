@@ -15,6 +15,9 @@ import PrivateRoute from "./components/common/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateBook from "./components/create/CreateBook";
 import Book from "./components/book/Book";
+import Test from "./components/Test";
+import AddChapter from "./components/create/AddChapter";
+import EditBook from "./components/edit/EditBook";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -43,7 +46,18 @@ function App() {
             <Switch>
               <PrivateRoute exact path="/create-book" component={CreateBook} />
             </Switch>
+            <Switch>
+              <PrivateRoute exact path="/edit-book/:id" component={EditBook} />
+            </Switch>
+            <Switch>
+              <PrivateRoute
+                exact
+                path="/add-chapter/:bookid"
+                component={AddChapter}
+              />
+            </Switch>
             <Route exact path="/book/:id" component={Book} />
+            <Route exact path="/test" component={Test} />
           </div>
           <Footer />
         </div>

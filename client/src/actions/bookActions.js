@@ -4,7 +4,8 @@ import {
   GET_ERRORS,
   CLEAR_ERRORS,
   GET_BOOK,
-  BOOK_LOADING
+  BOOK_LOADING,
+  BOOK_NOT_FOUND
 } from "./types";
 
 export const addBook = (postData, history) => dispatch => {
@@ -19,11 +20,11 @@ export const addBook = (postData, history) => dispatch => {
       history.push(`/book/${res.data._id}`);
     })
     .catch(err => {
-      console.log(err);
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+      if (err.response !== undefined)
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        });
     });
 };
 
@@ -32,16 +33,53 @@ export const getBook = id => dispatch => {
   axios
     .get(`/api/books/${id}`)
     .then(res => {
-      dispatch({
-        type: GET_BOOK,
-        payload: res.data
-      });
+      if (res.data === null) {
+        dispatch({ type: BOOK_NOT_FOUND, payload: {} });
+      } else {
+        dispatch({
+          type: GET_BOOK,
+          payload: res.data
+        });
+      }
     })
     .catch(err => {
-      if (err.response !== undefined) {
-        dispatch({ type: GET_ERRORS, payload: err.response.data });
-      }
-      dispatch({ type: GET_BOOK, payload: null });
+      console.log(err);
+      dispatch({ type: BOOK_NOT_FOUND, payload: {} });
+    });
+};
+
+export const editBook = (bookData, id, history) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/books/edit/${id}`, bookData)
+    .then(res => {
+      dispatch({
+        type: ADD_BOOK,
+        payload: res.data
+      });
+      history.push(`/book/${id}`);
+    })
+    .catch(err => {
+      if (err.response !== undefined)
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        });
+    });
+};
+
+export const addChapter = (chapterData, id, history) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/books/chapter/${id}`, chapterData)
+    .then(res => {
+      history.push(`/book/${res.data._id}`);
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
     });
 };
 

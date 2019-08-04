@@ -3,7 +3,8 @@ import {
   GET_BOOKS,
   GET_BOOK,
   ADD_BOOK,
-  DELETE_BOOK
+  DELETE_BOOK,
+  BOOK_NOT_FOUND
 } from "../actions/types";
 
 const initialState = {
@@ -41,6 +42,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         books: state.books.filter(book => book._id !== action.payload)
+      };
+    case BOOK_NOT_FOUND:
+      return {
+        ...state,
+        loading: false,
+        book: action.payload
       };
     default:
       return state;

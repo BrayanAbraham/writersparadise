@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 
 const users = require("./routes/api/users");
-// const profile = require("./routes/api/profile");
+const test = require("./routes/test");
 const books = require("./routes/api/books");
 const app = express();
 
@@ -25,7 +25,7 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 app.use("/api/users", users);
-// app.use("/api/profile", profile);
+app.use("/test", test);
 app.use("/api/books", books);
 
 process.on("unhandledRejection", (reason, promise) => {
