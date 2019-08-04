@@ -5,7 +5,9 @@ import {
   CLEAR_ERRORS,
   GET_BOOK,
   BOOK_LOADING,
-  BOOK_NOT_FOUND
+  BOOK_NOT_FOUND,
+  GET_BOOKS,
+  DELETE_BOOK
 } from "./types";
 
 export const addBook = (postData, history) => dispatch => {
@@ -25,6 +27,24 @@ export const addBook = (postData, history) => dispatch => {
           type: GET_ERRORS,
           payload: err.response.data
         });
+    });
+};
+
+export const getAllBooks = () => dispatch => {
+  dispatch(setBookLoading());
+  axios
+    .get("api/books")
+    .then(res =>
+      dispatch({
+        type: GET_BOOKS,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      dispatch({
+        type: BOOK_NOT_FOUND,
+        payload: {}
+      });
     });
 };
 
@@ -81,6 +101,93 @@ export const addChapter = (chapterData, id, history) => dispatch => {
         payload: err.response.data
       });
     });
+};
+
+export const deleteChapter = (bookid, chapterid) => dispatch => {
+  axios
+    .delete(`/api/books/chapter/${bookid}/${chapterid}`)
+    .then(res =>
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const getBooksByUser = user => dispatch => {
+  dispatch(setBookLoading);
+  axios
+    .get(`/api/books/user/${user}`)
+    .then(res => {
+      dispatch({
+        type: GET_BOOKS,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_BOOKS,
+        payload: null
+      });
+    });
+};
+
+export const likebook = (id, option, user) => dispatch => {
+  axios
+    .post(`/api/books/like/${id}`)
+    .then(res => {
+      if (option === "user") dispatch(getBooksByUser(user));
+      else if (option === "id") dispatch(getBook(id));
+      else dispatch(getAllBooks());
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
+export const dislikebook = (id, option, user) => dispatch => {
+  axios
+    .post(`/api/books/dislike/${id}`)
+    .then(res => {
+      if (option === "user") dispatch(getBooksByUser(user));
+      else if (option === "id") dispatch(getBook(id));
+      else dispatch(getAllBooks());
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const deleteBook = id => dispatch => {
+  if (window.confirm("Are you sure? This can NOT be undone!")) {
+    axios
+      .delete(`/api/books/${id}`)
+      .then(res =>
+        dispatch({
+          type: DELETE_BOOK,
+          payload: id
+        })
+      )
+      .catch(err =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        })
+      );
+  }
 };
 
 export const clearErrors = () => {

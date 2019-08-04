@@ -43,6 +43,7 @@ class BookChapters extends Component {
         </Link>
       );
     }
+
     let chapters = book.chapters
       .slice(0)
       .reverse()
@@ -59,7 +60,9 @@ class BookChapters extends Component {
     return (
       <div className="bookchapters">
         <div className="row mb-3">
-          <div className="col-md-12 col-12 m-auto">{userButtons}</div>
+          <div className="col-md-12 col-12 m-auto text-center">
+            {userButtons}
+          </div>
         </div>
 
         <div className="chapters">

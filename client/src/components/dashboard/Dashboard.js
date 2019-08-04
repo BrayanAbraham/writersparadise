@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import DashboardHeader from "./DashboardHeader";
+import DashboardPosts from "./DashboardPosts";
 
 class Dashboard extends Component {
   render() {
@@ -12,6 +13,7 @@ class Dashboard extends Component {
           <div className="col-md-12">
             <DashboardHeader user={user} />
             <hr />
+            <DashboardPosts user={user} />
           </div>
         </div>
       </div>

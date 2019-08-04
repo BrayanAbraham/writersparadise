@@ -18,6 +18,7 @@ import Book from "./components/book/Book";
 import Test from "./components/Test";
 import AddChapter from "./components/create/AddChapter";
 import EditBook from "./components/edit/EditBook";
+import Books from "./components/books/Books";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -56,6 +57,7 @@ function App() {
                 component={AddChapter}
               />
             </Switch>
+            <Route exact path="/books" component={Books} />
             <Route exact path="/book/:id" component={Book} />
             <Route exact path="/test" component={Test} />
           </div>

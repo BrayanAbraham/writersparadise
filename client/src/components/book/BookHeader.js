@@ -3,8 +3,23 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import isEmpty from "../../validation/is-empty";
 import { Link } from "react-router-dom";
+import { deleteBook, likebook, dislikebook } from "../../actions/bookActions";
+import { withRouter } from "react-router-dom";
 
 class BookHeader extends Component {
+  deleteBook(id) {
+    this.props.deleteBook(id, "user", this.props.auth.user.id);
+    this.props.history.push("/dashboard");
+  }
+
+  like(id) {
+    this.props.likebook(id, "id", null);
+  }
+
+  dislike(id) {
+    this.props.dislikebook(id, "id", null);
+  }
+
   render() {
     const { book } = this.props.book;
     const { user } = this.props.auth;
@@ -14,7 +29,7 @@ class BookHeader extends Component {
     if (book.image === "noimage") {
       bookimage = (
         <img
-          src={require("../../img/noimage.png")}
+          src={require("../../img/nobookimage.png")}
           alt="not found"
           className="img-thumbnail img-fluid rounded mx-auto d-block"
         />
@@ -31,9 +46,17 @@ class BookHeader extends Component {
     if (!isEmpty(user) && book.user.handle === user.handle) {
       const to = "/edit-book/" + book._id;
       writeroptions.editheader = (
-        <Link className="float-right btn btn-light" to={to}>
-          <i className="fa fa-pencil fa-lg" />
-        </Link>
+        <div className="float-right">
+          <Link className=" btn btn-light mr-2" to={to}>
+            <i className="fa fa-pencil fa-lg" />
+          </Link>
+          <button
+            className=" btn btn-danger text-white"
+            onClick={this.deleteBook.bind(this, book._id)}
+          >
+            <i className="fa fa-times fa-lg" />
+          </button>
+        </div>
       );
       writeroptions.image = (
         <div className="col-md-3 col-sm-3 col-6 m-auto">
@@ -60,6 +83,26 @@ class BookHeader extends Component {
         {genre}
       </div>
     ));
+
+    let likebuttons;
+    if (!isEmpty(this.props.auth.user)) {
+      likebuttons = (
+        <span>
+          <button
+            className="btn btn-primary mr-2"
+            onClick={this.like.bind(this, book._id)}
+          >
+            <i className="fa fa-thumbs-up" /> Like
+          </button>
+          <button
+            className="btn btn-danger"
+            onClick={this.dislike.bind(this, book._id)}
+          >
+            <i className="fa fa-thumbs-down" /> Disike
+          </button>
+        </span>
+      );
+    }
 
     return (
       <div className="bookheader">
@@ -91,6 +134,10 @@ class BookHeader extends Component {
                     Likes: {book.likes.length}
                   </div>
                 </div>
+                <div className="row">
+                  <div className="col-md-6 col-6" />
+                  <div className="col-md-6 col-6 m-auto">{likebuttons}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -102,7 +149,10 @@ class BookHeader extends Component {
 
 BookHeader.propTypes = {
   book: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  deleteBook: PropTypes.func.isRequired,
+  likebook: PropTypes.func.isRequired,
+  dislikebook: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -112,5 +162,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
-)(BookHeader);
+  { deleteBook, likebook, dislikebook }
+)(withRouter(BookHeader));

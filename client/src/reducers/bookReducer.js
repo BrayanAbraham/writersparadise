@@ -23,7 +23,7 @@ export default function(state = initialState, action) {
     case GET_BOOKS:
       return {
         ...state,
-        book: action.payload,
+        books: action.payload,
         loading: false
       };
     case GET_BOOK:

@@ -136,3 +136,19 @@ body {
   bottom: -4px;
   right: 10px;
 }
+
+.likebutton {
+  color: black;
+}
+
+.likebutton:hover {
+  color: blue;
+}
+
+.dislikebutton {
+  color: black;
+}
+
+.dislikebutton:hover {
+  color: red;
+}
