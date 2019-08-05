@@ -60,6 +60,11 @@ class DashboardPosts extends Component {
             <Link to={`/book/${book._id}`} style={{ textDecoration: "none" }}>
               <h5 className="card-title">{book.title}</h5>
             </Link>
+            <div className="text-white">
+              <small className="bg-primary pr-2 pl-2 pt-1 pb-1">
+                {book.status}
+              </small>
+            </div>
             <small>
               <i className="fa fa-align-justify" /> {book.chapters.length}
               <i className="fa fa-heart text-danger ml-2" /> {book.likes.length}

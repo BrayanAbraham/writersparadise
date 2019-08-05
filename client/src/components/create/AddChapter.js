@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addChapter } from "../../actions/bookActions";
 import TextFieldGroup from "../common/TextFieldGroup";
-import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { withRouter } from "react-router-dom";
+import CKEditor from "react-ckeditor-component";
+import classnames from "classnames";
 
 class AddChapter extends Component {
   constructor(props) {
@@ -17,6 +18,8 @@ class AddChapter extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.updateContent = this.updateContent.bind(this);
+    this.onChangeck = this.onChangeck.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +43,27 @@ class AddChapter extends Component {
     this.props.addChapter(newChapter, this.state.id, this.props.history);
   }
 
+  updateContent(newContent) {
+    this.setState({
+      body: newContent
+    });
+  }
+
+  onChangeck(evt) {
+    var newContent = evt.editor.getData();
+    this.setState({
+      body: newContent
+    });
+  }
+
+  onBlur(evt) {
+    console.log("onBlur event called with event info: ", evt);
+  }
+
+  afterPaste(evt) {
+    console.log("afterPaste event called with event info: ", evt);
+  }
+
   onChange(event) {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -54,33 +78,47 @@ class AddChapter extends Component {
     const { errors } = this.state;
     return (
       <div className="addchapter">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-10 m-auto">
-              <h1 className="display-4 text-center">AddChapter</h1>
-              <form noValidate onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  placeholder="Title"
-                  name="title"
-                  value={this.state.title}
-                  onChange={this.onChange}
-                  error={errors.title}
+        <div className="row">
+          <div className="col-md-12 m-auto">
+            <h1 className="display-4 text-center">Add Chapter</h1>
+            <form noValidate onSubmit={this.onSubmit}>
+              <TextFieldGroup
+                placeholder="Title"
+                name="title"
+                value={this.state.title}
+                onChange={this.onChange}
+                error={errors.title}
+              />
+              <div className="form-group">
+                <small className="form-text text-muted">
+                  Resize the Editor using the arrow on bottom right
+                </small>
+                <CKEditor
+                  activeClass={classnames("p10 form-control", {
+                    "is-invalid": this.state.errors.body
+                  })}
+                  content={this.state.body}
+                  events={{
+                    blur: this.onBlur,
+                    afterPaste: this.afterPaste,
+                    change: this.onChangeck
+                  }}
+                  config={{
+                    removePlugins: "clipboard"
+                  }}
                 />
-                <TextAreaFieldGroup
-                  placeholder="Chapter"
-                  name="body"
-                  value={this.state.body}
-                  onChange={this.onChange}
-                  error={errors.body}
-                  rows="20"
-                />
-                <input
-                  type="submit"
-                  value="Submit"
-                  className="btn btn-info btn-block mt-4"
-                />
-              </form>
-            </div>
+                {this.state.errors.body && (
+                  <div className="invalid-feedback">
+                    {this.state.errors.body}
+                  </div>
+                )}
+              </div>
+              <input
+                type="submit"
+                value="Submit"
+                className="btn btn-info btn-block mt-4"
+              />
+            </form>
           </div>
         </div>
       </div>

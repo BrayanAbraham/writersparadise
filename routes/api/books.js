@@ -95,7 +95,7 @@ router.post(
 );
 
 router.get("/", (req, res) => {
-  Book.find()
+  Book.find({ status: "Public" })
     .sort({ date: -1 })
     .populate("user", ["handle"])
     .then(books => res.json(books))
@@ -256,7 +256,14 @@ router.delete(
           .indexOf(req.params.id);
         if (chapterIndex !== -1) {
           book.chapters.splice(chapterIndex, 1);
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ nochapterfound: "Chapter not found" });
         }
@@ -291,45 +298,6 @@ router.post(
   }
 );
 
-router.post(
-  "/character/edit/:bookid/:id",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const { errors, isValid } = validateCharacterInput(req.body);
-    if (!isValid) {
-      return res.status(400).json(errors);
-    }
-    Book.findById(req.params.bookid)
-      .then(book => {
-        const characterIndex = book.characters
-          .map(item => item._id.toString())
-          .indexOf(req.params.id);
-        if (characterIndex !== -1) {
-          const character = book.characters[characterIndex];
-          character.name = req.body.name;
-          character.profession = req.body.profession;
-          character.height = req.body.height;
-          character.weight = req.body.weight;
-          character.look = req.body.look;
-          character.behaviour = req.body.behaviour;
-          character.about = req.body.about;
-          book.characters[characterIndex] = character;
-          book.save().then(book =>
-            Book.findById(req.params.bookid)
-              .populate("user", ["handle"])
-              .then(book => res.json(book))
-              .catch(err => {
-                res.status(404).json({ nobookfound: "Book not found" });
-              })
-          );
-        } else {
-          res.status(404).json({ nocharacterfound: "character not found" });
-        }
-      })
-      .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
-  }
-);
-
 router.delete(
   "/character/:bookid/:id",
   passport.authenticate("jwt", { session: false }),
@@ -341,7 +309,14 @@ router.delete(
           .indexOf(req.params.id);
         if (characterIndex !== -1) {
           book.characters.splice(characterIndex, 1);
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ nocharacterfound: "character not found" });
         }

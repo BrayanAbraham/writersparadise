@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { deleteChapter } from "../../actions/bookActions";
 
 class BookChapters extends Component {
   getEditButton(chapterid) {
@@ -13,19 +14,26 @@ class BookChapters extends Component {
         </Link>
       );
     } else {
-      return null;
+      return <span> </span>;
     }
+  }
+
+  onDeleteClick(chapterid) {
+    this.props.deleteChapter(this.props.book.book._id, chapterid);
   }
 
   getDeleteButton(chapterid) {
     if (this.props.book.book.user.handle === this.props.auth.user.handle) {
       return (
-        <button className="btn btn-danger float-right text-light mr-2">
+        <button
+          className="btn btn-danger float-right text-light mr-2"
+          onClick={this.onDeleteClick.bind(this, chapterid)}
+        >
           <i className="fa fa-times" />
         </button>
       );
     } else {
-      return null;
+      return <span> </span>;
     }
   }
 
@@ -72,7 +80,6 @@ class BookChapters extends Component {
                 <th scope="col-2">#</th>
                 <th scope="col-8">Chapter</th>
                 <th scope="col" />
-                <th scope="col" />
               </tr>
             </thead>
             <tbody>{chapters}</tbody>
@@ -85,7 +92,8 @@ class BookChapters extends Component {
 
 BookChapters.propTypes = {
   book: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  deleteChapter: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -95,5 +103,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  {deleteChapter}
 )(BookChapters);

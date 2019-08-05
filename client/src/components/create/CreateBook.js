@@ -55,7 +55,7 @@ class CreateBook extends Component {
   render() {
     const { errors } = this.state;
     const options = [
-      { label: "*Select Status", value: 0 },
+      { label: "*Select Status", value: "" },
       { label: "Unpublished", value: "Unpublished" },
       { label: "Public", value: "Public" },
       { label: "Private", value: "Private" }

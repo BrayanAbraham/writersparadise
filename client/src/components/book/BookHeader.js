@@ -92,13 +92,17 @@ class BookHeader extends Component {
             className="btn btn-primary mr-2"
             onClick={this.like.bind(this, book._id)}
           >
-            <i className="fa fa-thumbs-up" /> Like
+            <small>
+              <i className="fa fa-thumbs-up" /> Like
+            </small>
           </button>
           <button
             className="btn btn-danger"
             onClick={this.dislike.bind(this, book._id)}
           >
-            <i className="fa fa-thumbs-down" /> Disike
+            <small>
+              <i className="fa fa-thumbs-down" /> Disike
+            </small>
           </button>
         </span>
       );

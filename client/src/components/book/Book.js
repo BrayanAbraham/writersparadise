@@ -7,6 +7,7 @@ import BookHeader from "./BookHeader";
 import isEmpty from "../../validation/is-empty";
 import classnames from "classnames";
 import BookChapters from "./BookChapters";
+import BookPlanner from "./BookPlanner";
 
 class Book extends Component {
   constructor(props) {
@@ -89,7 +90,7 @@ class Book extends Component {
     if (this.state.chapter) {
       restcontent = <BookChapters book={book} />;
     } else {
-      restcontent = "hello";
+      restcontent = <BookPlanner book={book} />;
     }
 
     if (nobookfound !== undefined) {

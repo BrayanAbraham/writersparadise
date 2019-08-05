@@ -103,9 +103,55 @@ export const addChapter = (chapterData, id, history) => dispatch => {
     });
 };
 
+export const addCharacter = (characterData, id, history) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/books/character/${id}`, characterData)
+    .then(res => {
+      dispatch(getBook(id));
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
+export const editChapter = (chapterData, bookid, id, history) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/books/chapter/edit/${bookid}/${id}`, chapterData)
+    .then(res => history.push(`/book/${bookid}`))
+    .catch(err => {
+      console.log(err.response);
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
 export const deleteChapter = (bookid, chapterid) => dispatch => {
   axios
     .delete(`/api/books/chapter/${bookid}/${chapterid}`)
+    .then(res =>
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const deleteCharacter = (bookid, characterid) => dispatch => {
+  axios
+    .delete(`/api/books/character/${bookid}/${characterid}`)
     .then(res =>
       dispatch({
         type: GET_BOOK,
