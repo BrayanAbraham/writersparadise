@@ -96,10 +96,7 @@ export const addChapter = (chapterData, id, history) => dispatch => {
       history.push(`/book/${res.data._id}`);
     })
     .catch(err => {
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      });
+      dispatch(getBook(id));
     });
 };
 
@@ -107,6 +104,21 @@ export const addCharacter = (characterData, id, history) => dispatch => {
   dispatch(clearErrors());
   axios
     .post(`/api/books/character/${id}`, characterData)
+    .then(res => {
+      dispatch(getBook(id));
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
+export const addPlotline = (plotline, id, history) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/books/storyline/${id}`, plotline)
     .then(res => {
       dispatch(getBook(id));
     })

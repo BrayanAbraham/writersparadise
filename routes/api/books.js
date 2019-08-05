@@ -339,7 +339,14 @@ router.post(
           plotline: req.body.plotline
         };
         book.storyline.unshift(newStoryline);
-        book.save().then(book => res.json(book));
+        book.save().then(book =>
+          Book.findById(req.params.bookid)
+            .populate("user", ["handle"])
+            .then(book => res.json(book))
+            .catch(err => {
+              res.status(404).json({ nobookfound: "Book not found" });
+            })
+        );
       })
       .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
   }

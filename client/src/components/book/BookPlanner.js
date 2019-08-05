@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Characters from "./Characters";
+import Storyline from "./Storyline";
 
 class BookPlanner extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class BookPlanner extends Component {
     if (option === "character") {
       content = <Characters book={book} />;
     } else if (option === "storyline") {
-      content = "storyline";
+      content = <Storyline book={book} />;
     } else {
       content = "chapter";
     }
@@ -49,7 +50,7 @@ class BookPlanner extends Component {
                   "btn-success": option !== "character"
                 })}
               >
-                Chapters
+                Characters
               </button>
             </div>
             <div className="col-md-4 col-sm-4 text-center ">
