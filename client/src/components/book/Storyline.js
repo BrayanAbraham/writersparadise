@@ -6,7 +6,14 @@ import AddPlotline from "../create/AddPlotline";
 class Storyline extends Component {
   render() {
     const { book } = this.props.book;
-    let content;
+    let content = book.storyline
+      .splice(0)
+      .reverse()
+      .map((plotline, index) => (
+        <div className="card card-body mb-3" key={index}>
+          <div dangerouslySetInnerHTML={{ __html: plotline.plotline }} />
+        </div>
+      ));
     return (
       <div>
         {content}
