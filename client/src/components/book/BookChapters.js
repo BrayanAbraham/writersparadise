@@ -46,9 +46,23 @@ class BookChapters extends Component {
     if (book.user.handle === user.handle) {
       const to = `/add-chapter/${book._id}`;
       userButtons = (
-        <Link className="btn btn-success" to={to}>
-          <i className="fa fa-plus" /> Add Chapter
-        </Link>
+        <div className="col-md-12 col-12 m-auto text-center">
+          <Link className="btn btn-success mr-5" to={to}>
+            <i className="fa fa-plus" /> Add Chapter
+          </Link>
+          <Link className="btn btn-success ml-5" to={`/readbook/${book._id}`}>
+            Read Book
+          </Link>
+        </div>
+      );
+    } else {
+      userButtons = (
+        <div className="col-md-12 col-12 m-auto text-center">
+          <hr />
+          <Link className="btn btn-success ml-5" to={`/readbook/${book._id}`}>
+            Read Book
+          </Link>
+        </div>
       );
     }
 
@@ -67,11 +81,7 @@ class BookChapters extends Component {
       ));
     return (
       <div className="bookchapters">
-        <div className="row mb-3">
-          <div className="col-md-12 col-12 m-auto text-center">
-            {userButtons}
-          </div>
-        </div>
+        <div className="row mb-3">{userButtons}</div>
 
         <div className="chapters">
           <table className="table">
@@ -103,5 +113,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {deleteChapter}
+  { deleteChapter }
 )(BookChapters);
