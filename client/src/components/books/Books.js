@@ -36,6 +36,14 @@ class Books extends Component {
           className="card-img-top"
         />
       );
+    } else {
+      return (
+        <img
+          src={require(`../../../../public/uploads/${name}`)}
+          alt=""
+          className="card-img-top"
+        />
+      );
     }
   }
 
@@ -64,11 +72,16 @@ class Books extends Component {
               <h5 className="card-title">{book.title}</h5>
             </Link>
             <small>
-              <i className="fa fa-align-justify" /> {book.chapters.length}
               {isEmpty(this.props.auth.user) && (
                 <span>
                   <i className="fa fa-heart text-danger ml-2" />{" "}
                   {book.likes.length}
+                </span>
+              )}
+              {book.user.handle !== this.props.auth.user.handle && (
+                <span>
+                  <i className="fa fa-align-justify ml-3" />{" "}
+                  {book.chapters.length}
                 </span>
               )}
               {book.user.handle === this.props.auth.user.handle && (
@@ -79,9 +92,11 @@ class Books extends Component {
                       className="likebutton"
                       style={{ textDecoration: "none" }}
                     >
-                      <i className="fa fa-pencil ml-3" /> Edit
+                      <i className="fa fa-pencil" /> Edit
                     </Link>
                   </span>
+                  <i className="fa fa-align-justify ml-3" />{" "}
+                  {book.chapters.length}
                   <span
                     className="point dislikebutton"
                     onClick={this.deleteBook.bind(this, book._id)}

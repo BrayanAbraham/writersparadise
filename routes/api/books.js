@@ -1,5 +1,7 @@
 const express = require("express");
 const passport = require("passport");
+const path = require("path");
+const multer = require("multer");
 
 const User = require("../../models/User");
 const Book = require("../../models/Book");
@@ -10,6 +12,26 @@ const validateCharacterInput = require("../../validation/character");
 const validatePlotlineInput = require("../../validation/plotline");
 const validateCommentInput = require("../../validation/comment");
 const validateChapterdescInput = require("../../validation/chapterdesc");
+
+const storage = multer.diskStorage({
+  destination: "./public/uploads/",
+  filename: function(req, file, cb) {
+    if (
+      file.mimetype === "image/jpg" ||
+      file.mimetype === "image/png" ||
+      file.mimetype === "image/jpeg"
+    ) {
+      cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+    } else {
+      cb(new Error("Wrong file type"));
+    }
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 }
+}).single("myImage");
 
 const router = express.Router();
 
@@ -624,6 +646,55 @@ router.delete(
       .catch(err => {
         res.status(404).json({ nobookfound: "Book not found" });
       });
+  }
+);
+
+router.post(
+  "/upload/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    upload(req, res, err => {
+      // console.log("Request ---", req.body);
+      // console.log("Request file ---", req.file); //Here you get file.
+      /*Now do where ever you want to do*/
+      if (!err && req.file) {
+        Book.findById(req.params.id).then(book => {
+          if (book) {
+            Book.updateOne(
+              { _id: req.params.id },
+              {
+                $set: {
+                  image: req.file.filename
+                }
+              }
+            )
+              .then(book =>
+                Book.findById(req.params.id)
+                  .populate("user", ["handle"])
+                  .then(book => res.json(book))
+                  .catch(err => {
+                    res.status(404).json({ nobookfound: "Book not found" });
+                  })
+              )
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              });
+          } else {
+            res.status(404).json({ nobookfound: "Book not found" });
+          }
+        });
+      } else {
+        console.log(err);
+        console.log("hi");
+        const errors = {};
+        if (err !== undefined && err.name === "MulterError") {
+          errors.file = "File Too Large";
+        } else {
+          errors.file = "Only images Allowed";
+        }
+        return res.status(400).json(errors);
+      }
+    });
   }
 );
 

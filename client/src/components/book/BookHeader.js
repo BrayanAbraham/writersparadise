@@ -3,10 +3,46 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import isEmpty from "../../validation/is-empty";
 import { Link } from "react-router-dom";
-import { deleteBook, likebook, dislikebook } from "../../actions/bookActions";
+import classnames from "classnames";
+import {
+  deleteBook,
+  likebook,
+  dislikebook,
+  uploadimage
+} from "../../actions/bookActions";
 import { withRouter } from "react-router-dom";
 
 class BookHeader extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      file: null,
+      errors: {}
+    };
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.errors) {
+      this.setState({ errors: newProps.errors });
+    }
+  }
+
+  onFormSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("myImage", this.state.file);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    };
+    this.props.uploadimage(formData, config, this.props.book.book._id);
+  }
+  onChange(e) {
+    this.setState({ file: e.target.files[0] });
+  }
   deleteBook(id) {
     this.props.deleteBook(id, "user", this.props.auth.user.id);
     this.props.history.push("/dashboard");
@@ -23,6 +59,7 @@ class BookHeader extends Component {
   render() {
     const { book } = this.props.book;
     const { user } = this.props.auth;
+    const { errors } = this.props;
     let writeroptions = {};
     let bookimage;
     let genrelist;
@@ -60,7 +97,70 @@ class BookHeader extends Component {
       );
       writeroptions.image = (
         <div className="col-md-3 col-sm-3 col-6 m-auto">
-          <div className="row">{bookimage}</div>
+          <div
+            className="row"
+            data-toggle="modal"
+            data-target="#imageuploadmodal"
+          >
+            {bookimage}
+          </div>
+          <div
+            className="modal fade"
+            id="imageuploadmodal"
+            tabIndex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    Upload Book Image
+                  </h5>
+                  <button
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form onSubmit={this.onFormSubmit}>
+                  <div className="modal-body">
+                    <small className="form-text text-muted">
+                      Max Size: 1MB, Files : jpg,jpeg,png
+                    </small>
+                    <input
+                      type="file"
+                      name="myImage"
+                      className={classnames("form-control", {
+                        "is-invalid": errors.file
+                      })}
+                      onChange={this.onChange}
+                    />
+                    {errors.file && (
+                      <div className="invalid-feedback">{errors.file}</div>
+                    )}
+                  </div>
+
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Upload
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
           <div className="row">
             <div className="col-md-12">
               <div className="col-md-12 text-center">
@@ -135,12 +235,8 @@ class BookHeader extends Component {
                     Chapters: {book.chapters.length}
                   </div>
                   <div className="col-md-6 col-6">
-                    Likes: {book.likes.length}
+                    Likes: {book.likes.length} <span>{likebuttons}</span>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6 col-6" />
-                  <div className="col-md-6 col-6 m-auto">{likebuttons}</div>
                 </div>
               </div>
             </div>
@@ -156,15 +252,18 @@ BookHeader.propTypes = {
   auth: PropTypes.object.isRequired,
   deleteBook: PropTypes.func.isRequired,
   likebook: PropTypes.func.isRequired,
-  dislikebook: PropTypes.func.isRequired
+  dislikebook: PropTypes.func.isRequired,
+  uploadimage: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   book: state.book,
-  auth: state.auth
+  auth: state.auth,
+  errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { deleteBook, likebook, dislikebook }
+  { deleteBook, likebook, dislikebook, uploadimage }
 )(withRouter(BookHeader));

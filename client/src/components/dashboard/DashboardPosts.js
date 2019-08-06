@@ -35,6 +35,14 @@ class DashboardPosts extends Component {
           className="card-img-top"
         />
       );
+    } else {
+      return (
+        <img
+          src={require(`../../../../public/uploads/${name}`)}
+          alt=""
+          className="card-img-top"
+        />
+      );
     }
   }
 

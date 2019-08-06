@@ -271,6 +271,24 @@ export const deleteBook = id => dispatch => {
   }
 };
 
+export const uploadimage = (formData, config, bookid) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/books/upload/${bookid}`, formData, config)
+    .then(res => {
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      });
+    })
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 export const clearErrors = () => {
   return {
     type: CLEAR_ERRORS
