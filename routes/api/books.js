@@ -352,38 +352,6 @@ router.post(
   }
 );
 
-router.post(
-  "/storyline/edit/:bookid/:id",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const { errors, isValid } = validatePlotlineInput(req.body);
-    if (!isValid) {
-      return res.status(400).json(errors);
-    }
-    Book.findById(req.params.bookid)
-      .then(book => {
-        const plotlineIndex = book.storyline
-          .map(item => item._id.toString())
-          .indexOf(req.params.id);
-        if (plotlineIndex !== -1) {
-          const storyline = book.storyline[plotlineIndex];
-          storyline.plotline = req.body.plotline;
-          book.save().then(book =>
-            Book.findById(req.params.bookid)
-              .populate("user", ["handle"])
-              .then(book => res.json(book))
-              .catch(err => {
-                res.status(404).json({ nobookfound: "Book not found" });
-              })
-          );
-        } else {
-          res.status(404).json({ noplotlinefound: "plotline not found" });
-        }
-      })
-      .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
-  }
-);
-
 router.delete(
   "/storyline/:bookid/:id",
   passport.authenticate("jwt", { session: false }),
@@ -395,7 +363,14 @@ router.delete(
           .indexOf(req.params.id);
         if (plotlineIndex !== -1) {
           book.storyline.splice(plotlineIndex, 1);
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ noplotlinefound: "plotline not found" });
         }

@@ -105,7 +105,10 @@ export const addCharacter = (characterData, id, history) => dispatch => {
   axios
     .post(`/api/books/character/${id}`, characterData)
     .then(res => {
-      dispatch(getBook(id));
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      });
     })
     .catch(err => {
       dispatch({
@@ -120,7 +123,10 @@ export const addPlotline = (plotline, id, history) => dispatch => {
   axios
     .post(`/api/books/storyline/${id}`, plotline)
     .then(res => {
-      dispatch(getBook(id));
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      });
     })
     .catch(err => {
       dispatch({
@@ -164,6 +170,23 @@ export const deleteChapter = (bookid, chapterid) => dispatch => {
 export const deleteCharacter = (bookid, characterid) => dispatch => {
   axios
     .delete(`/api/books/character/${bookid}/${characterid}`)
+    .then(res =>
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const deletePlotline = (bookid, plotlineid) => dispatch => {
+  axios
+    .delete(`/api/books/storyline/${bookid}/${plotlineid}`)
     .then(res =>
       dispatch({
         type: GET_BOOK,

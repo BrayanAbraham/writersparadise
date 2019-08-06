@@ -104,7 +104,7 @@ class AddChapter extends Component {
                     change: this.onChangeck
                   }}
                   config={{
-                    removePlugins: "clipboard"
+                    removePlugins: "link,sourcearea,image"
                   }}
                 />
                 {this.state.errors.body && (

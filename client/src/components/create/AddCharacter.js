@@ -49,6 +49,16 @@ class AddCharacter extends Component {
       this.props.book.book._id,
       this.props.history
     );
+    this.setState({
+      name: "",
+      profession: "",
+      height: "",
+      weight: "",
+      look: "",
+      behaviour: "",
+      about: "",
+      errors: {}
+    });
   }
 
   onChange(event) {

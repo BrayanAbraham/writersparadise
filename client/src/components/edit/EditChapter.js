@@ -116,6 +116,9 @@ class EditChapter extends Component {
                       afterPaste: this.afterPaste,
                       change: this.onChangeck
                     }}
+                    config={{
+                      removePlugins: "link,sourcearea,image"
+                    }}
                   />
                   {this.state.errors.body && (
                     <div className="invalid-feedback">

@@ -39,6 +39,10 @@ class AddPlotline extends Component {
       this.props.book.book._id,
       this.props.history
     );
+    this.setState({
+      plotline: "",
+      errors: {}
+    });
   }
 
   onChange(event) {
