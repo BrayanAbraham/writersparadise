@@ -26,20 +26,16 @@ class ReadBook extends Component {
 
   getImage(name) {
     if (name === "noimage") {
-      return (
-        <img
-          src={require("../../img/nobookimage.png")}
-          alt=""
-          className="card-img-top"
-        />
-      );
+      return null;
     } else {
       return (
-        <img
-          src={require(`../../../../public/uploads/${name}`)}
-          alt=""
-          className="card-img-top"
-        />
+        <div className="book-image card card-body mb-5">
+          <img
+            src={require(`../../../../public/uploads/${name}`)}
+            alt=""
+            className="card-img-top"
+          />
+        </div>
       );
     }
   }
@@ -87,9 +83,7 @@ class ReadBook extends Component {
                 >
                   {book.title}
                 </h1>
-                <div className="book-image card card-body mb-5">
-                  {this.getImage(book.image)}
-                </div>
+                {this.getImage(book.image)}
                 {chapters}
               </div>
               <div className="col-1" />
