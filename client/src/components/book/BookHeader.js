@@ -235,8 +235,12 @@ class BookHeader extends Component {
                     Chapters: {book.chapters.length}
                   </div>
                   <div className="col-md-6 col-6">
-                    Likes: {book.likes.length} <span>{likebuttons}</span>
+                    Likes: {book.likes.length}
                   </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6 col-6" />
+                  <div className="col-md-6 col-6">{likebuttons}</div>
                 </div>
               </div>
             </div>

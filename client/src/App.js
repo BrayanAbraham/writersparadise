@@ -66,6 +66,7 @@ function App() {
             </Switch>
             <Route exact path="/books" component={Books} />
             <Route exact path="/book/:id" component={Book} />
+            <Route exact path="/readbook/:id" component={Book} />
           </div>
           <Footer />
         </div>

@@ -64,7 +64,7 @@ class Books extends Component {
     const { nobookfound } = this.props.errors;
 
     let allbooks = books.map((book, index) => (
-      <div className="book col-md-4" key={index}>
+      <div className="book col-md-4 col-sm-6" key={index}>
         <div className="card h-100">
           <Link to={`/book/${book._id}`}>{this.getImage(book.image)}</Link>
           <div className="card-body text-center">
