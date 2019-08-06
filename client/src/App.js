@@ -15,7 +15,6 @@ import PrivateRoute from "./components/common/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateBook from "./components/create/CreateBook";
 import Book from "./components/book/Book";
-import Test from "./components/Test";
 import AddChapter from "./components/create/AddChapter";
 import EditBook from "./components/edit/EditBook";
 import Books from "./components/books/Books";
@@ -67,7 +66,6 @@ function App() {
             </Switch>
             <Route exact path="/books" component={Books} />
             <Route exact path="/book/:id" component={Book} />
-            <Route exact path="/test" component={Test} />
           </div>
           <Footer />
         </div>
