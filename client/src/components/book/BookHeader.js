@@ -98,7 +98,7 @@ class BookHeader extends Component {
       writeroptions.image = (
         <div className="col-md-3 col-sm-3 col-6 m-auto">
           <div
-            className="row"
+            className="row point"
             data-toggle="modal"
             data-target="#imageuploadmodal"
           >

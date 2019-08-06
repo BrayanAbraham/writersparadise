@@ -136,6 +136,24 @@ export const addPlotline = (plotline, id, history) => dispatch => {
     });
 };
 
+export const addChapterDesc = (chapter, id, history) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/books/chapterdesc/${id}`, chapter)
+    .then(res => {
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
 export const editChapter = (chapterData, bookid, id, history) => dispatch => {
   dispatch(clearErrors());
   axios
@@ -187,6 +205,23 @@ export const deleteCharacter = (bookid, characterid) => dispatch => {
 export const deletePlotline = (bookid, plotlineid) => dispatch => {
   axios
     .delete(`/api/books/storyline/${bookid}/${plotlineid}`)
+    .then(res =>
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const deleteChapterDesc = (bookid, plotlineid) => dispatch => {
+  axios
+    .delete(`/api/books/chapterdesc/${bookid}/${plotlineid}`)
     .then(res =>
       dispatch({
         type: GET_BOOK,

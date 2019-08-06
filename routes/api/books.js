@@ -63,7 +63,14 @@ router.post(
       user: req.user.id
     });
 
-    newBook.save().then(book => res.json(book));
+    newBook.save().then(book =>
+      Book.findById(req.params.id)
+        .populate("user", ["handle"])
+        .then(book => res.json(book))
+        .catch(err => {
+          res.status(404).json({ nobookfound: "Book not found" });
+        })
+    );
   }
 );
 
@@ -416,7 +423,14 @@ router.post(
           commentUser: req.user.id
         };
         book.comments.unshift(newComment);
-        book.save().then(book => res.json(book));
+        book.save().then(book =>
+          Book.findById(req.params.bookid)
+            .populate("user", ["handle"])
+            .then(book => res.json(book))
+            .catch(err => {
+              res.status(404).json({ nobookfound: "Book not found" });
+            })
+        );
       })
       .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
   }
@@ -441,7 +455,14 @@ router.delete(
           .map(item => item._id.toString())
           .indexOf(req.params.commentid);
         book.comments.splice(removeIndex, 1);
-        book.save().then(book => res.json(book));
+        book.save().then(book =>
+          Book.findById(req.params.bookid)
+            .populate("user", ["handle"])
+            .then(book => res.json(book))
+            .catch(err => {
+              res.status(404).json({ nobookfound: "Book not found" });
+            })
+        );
       })
       .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
   }
@@ -466,7 +487,14 @@ router.post(
             commentUser: req.user.id
           };
           book.chapters[chapterIndex].comments.unshift(newComment);
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ nochapterfound: "Chapter not found" });
         }
@@ -500,7 +528,14 @@ router.delete(
             .map(item => item._id.toString())
             .indexOf(req.params.commentid);
           book.chapters[chapterIndex].comments.splice(removeIndex, 1);
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ nochapterfound: "Chapter not found" });
         }
@@ -526,41 +561,14 @@ router.post(
           description: req.body.description
         };
         book.chapterdescription.unshift(newChapterdesc);
-        book.save().then(book => res.json(book));
-      })
-      .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
-  }
-);
-
-router.post(
-  "/chapterdesc/edit/:bookid/:id",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const { errors, isValid } = validateChapterdescInput(req.body);
-    if (!isValid) {
-      return res.status(400).json(errors);
-    }
-    Book.findById(req.params.bookid)
-      .then(book => {
-        const chapterdescIndex = book.chapterdescription
-          .map(item => item._id.toString())
-          .indexOf(req.params.id);
-        if (chapterdescIndex !== -1) {
-          const chapter = book.chapterdescription[chapterdescIndex];
-          chapter.title = req.body.title;
-          chapter.description = req.body.description;
-          book.chapterdescription[chapterdescIndex] = chapter;
-          book.save().then(book =>
-            Book.findById(req.params.bookid)
-              .populate("user", ["handle"])
-              .then(book => res.json(book))
-              .catch(err => {
-                res.status(404).json({ nobookfound: "Book not found" });
-              })
-          );
-        } else {
-          res.status(404).json({ nochapterfound: "Chapter not found" });
-        }
+        book.save().then(book =>
+          Book.findById(req.params.bookid)
+            .populate("user", ["handle"])
+            .then(book => res.json(book))
+            .catch(err => {
+              res.status(404).json({ nobookfound: "Book not found" });
+            })
+        );
       })
       .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
   }
@@ -577,7 +585,14 @@ router.delete(
           .indexOf(req.params.id);
         if (chapterdescIndex !== -1) {
           book.chapterdescription.splice(chapterdescIndex, 1);
-          book.save().then(book => res.json(book));
+          book.save().then(book =>
+            Book.findById(req.params.bookid)
+              .populate("user", ["handle"])
+              .then(book => res.json(book))
+              .catch(err => {
+                res.status(404).json({ nobookfound: "Book not found" });
+              })
+          );
         } else {
           res.status(404).json({ nochapterfound: "Chapter not found" });
         }

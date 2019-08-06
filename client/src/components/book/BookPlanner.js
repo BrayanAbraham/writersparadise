@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Characters from "./Characters";
 import Storyline from "./Storyline";
+import ChapterPlanner from "./ChapterPlanner";
 
 class BookPlanner extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class BookPlanner extends Component {
     } else if (option === "storyline") {
       content = <Storyline book={book} />;
     } else {
-      content = "chapter";
+      content = <ChapterPlanner book={book} />;
     }
     return (
       <div className="book-planner">

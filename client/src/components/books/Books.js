@@ -71,13 +71,8 @@ class Books extends Component {
             <Link to={`/book/${book._id}`} style={{ textDecoration: "none" }}>
               <h5 className="card-title">{book.title}</h5>
             </Link>
+            <div>By {book.user.handle}</div>
             <small>
-              {isEmpty(this.props.auth.user) && (
-                <span>
-                  <i className="fa fa-heart text-danger ml-2" />{" "}
-                  {book.likes.length}
-                </span>
-              )}
               {book.user.handle !== this.props.auth.user.handle && (
                 <span>
                   <i className="fa fa-align-justify ml-3" />{" "}
@@ -103,6 +98,12 @@ class Books extends Component {
                   >
                     <i className="fa fa-times ml-3" /> Delete
                   </span>
+                </span>
+              )}
+              {isEmpty(this.props.auth.user) && (
+                <span>
+                  <i className="fa fa-heart text-danger ml-2" />{" "}
+                  {book.likes.length}
                 </span>
               )}
             </small>

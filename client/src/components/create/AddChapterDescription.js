@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addPlotline } from "../../actions/bookActions";
+import { addChapterDesc } from "../../actions/bookActions";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
+import TextFieldGroup from "../common/TextFieldGroup";
 import { withRouter } from "react-router-dom";
 
-class AddPlotline extends Component {
+class AddChapterDescription extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      plotline: "",
+      title: "",
+      description: "",
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -22,25 +24,23 @@ class AddPlotline extends Component {
     }
   }
 
-  componentDidMount() {
-    this.setState({ plotline: "" });
-  }
-
   onSubmit(e) {
     e.preventDefault();
 
-    const plotline = this.state.plotline.replace(/\n/g, "<br />");
+    const description = this.state.description.replace(/\n/g, "<br />");
 
-    const newplotline = {
-      plotline: plotline
+    const newChapterDesc = {
+      title: this.state.title,
+      description: description
     };
-    this.props.addPlotline(
-      newplotline,
+    this.props.addChapterDesc(
+      newChapterDesc,
       this.props.book.book._id,
       this.props.history
     );
     this.setState({
-      plotline: "",
+      title: "",
+      description: "",
       errors: {}
     });
   }
@@ -60,20 +60,27 @@ class AddPlotline extends Component {
     return (
       <div className="addplotline">
         <div className="card">
-          <div className="card-header text-center">Add Plotline</div>
+          <div className="card-header text-center">Add Chapter</div>
           <div className="card-body">
             <form noValidate onSubmit={this.onSubmit}>
-              <TextAreaFieldGroup
-                placeholder="Plotline"
-                name="plotline"
-                value={this.state.plotline}
+              <TextFieldGroup
+                placeholder="Title"
+                name="title"
+                value={this.state.title}
                 onChange={this.onChange}
-                error={errors.plotline}
+                error={errors.title}
+              />
+              <TextAreaFieldGroup
+                placeholder="Description"
+                name="description"
+                value={this.state.description}
+                onChange={this.onChange}
+                error={errors.description}
                 rows="10"
               />
               <input
                 type="submit"
-                value="Add Plotline"
+                value="Add Chapter"
                 className="btn btn-info btn-block mt-4"
               />
             </form>
@@ -84,10 +91,10 @@ class AddPlotline extends Component {
   }
 }
 
-AddPlotline.porpTypes = {
+AddChapterDescription.porpTypes = {
   errors: PropTypes.object.isRequired,
   book: PropTypes.object.isRequired,
-  addPlotline: PropTypes.func.isRequired
+  addChapterDesc: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -97,5 +104,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addPlotline }
-)(withRouter(AddPlotline));
+  { addChapterDesc }
+)(withRouter(AddChapterDescription));
