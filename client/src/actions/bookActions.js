@@ -136,6 +136,24 @@ export const addPlotline = (plotline, id, history) => dispatch => {
     });
 };
 
+export const addComment = (comment, id, history) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/books/comment/${id}`, comment)
+    .then(res => {
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      });
+    });
+};
+
 export const addChapterDesc = (chapter, id, history) => dispatch => {
   dispatch(clearErrors());
   axios
@@ -205,6 +223,23 @@ export const deleteCharacter = (bookid, characterid) => dispatch => {
 export const deletePlotline = (bookid, plotlineid) => dispatch => {
   axios
     .delete(`/api/books/storyline/${bookid}/${plotlineid}`)
+    .then(res =>
+      dispatch({
+        type: GET_BOOK,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const deleteComment = (bookid, commentid) => dispatch => {
+  axios
+    .delete(`/api/books/comment/${bookid}/${commentid}`)
     .then(res =>
       dispatch({
         type: GET_BOOK,

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import isEmpty from "../../validation/is-empty";
 import {
   getBooksByUser,
   likebook,
@@ -79,39 +80,59 @@ class DashboardPosts extends Component {
               </small>
             </div>
             <small>
-              <i className="fa fa-align-justify" /> {book.chapters.length}
-              <i className="fa fa-heart text-danger ml-2" /> {book.likes.length}
-              <span className="point">
-                <Link
-                  to={`/edit-book/${book._id}`}
-                  className="likebutton"
-                  style={{ textDecoration: "none" }}
-                >
-                  <i className="fa fa-pencil ml-3" /> Edit
-                </Link>
-              </span>
-              <span
-                className="point dislikebutton"
-                onClick={this.deleteBook.bind(this, book._id)}
-              >
-                <i className="fa fa-times ml-3" /> Delete
-              </span>
+              {book.user.handle !== this.props.auth.user.handle && (
+                <span>
+                  <i className="fa fa-align-justify ml-3" />{" "}
+                  {book.chapters.length}
+                </span>
+              )}
+              {book.user.handle === this.props.auth.user.handle && (
+                <span>
+                  <span className="point">
+                    <Link
+                      to={`/edit-book/${book._id}`}
+                      className="likebutton"
+                      style={{ textDecoration: "none" }}
+                    >
+                      <i className="fa fa-pencil" /> Edit
+                    </Link>
+                  </span>
+                  <i className="fa fa-align-justify ml-3" />{" "}
+                  {book.chapters.length}
+                  <span
+                    className="point dislikebutton"
+                    onClick={this.deleteBook.bind(this, book._id)}
+                  >
+                    <i className="fa fa-times ml-3" /> Delete
+                  </span>
+                </span>
+              )}
+              {isEmpty(this.props.auth.user) && (
+                <span>
+                  <i className="fa fa-heart text-danger ml-2" />{" "}
+                  {book.likes.length}
+                </span>
+              )}
             </small>
             <br />
-            <small>
-              <button
-                className="btn btn-light likebutton"
-                onClick={this.like.bind(this, book._id)}
-              >
-                <i className="fa fa-thumbs-up" /> Like
-              </button>
-              <button
-                className="btn btn-light dislikebutton"
-                onClick={this.dislike.bind(this, book._id)}
-              >
-                <i className="fa fa-thumbs-down" /> Disike
-              </button>
-            </small>
+            {!isEmpty(this.props.auth.user) && (
+              <small>
+                <button
+                  className="btn btn-light likebutton"
+                  onClick={this.like.bind(this, book._id)}
+                >
+                  <i className="fa fa-thumbs-up" /> Like
+                </button>
+                <i className="fa fa-heart text-danger ml-2" />{" "}
+                {book.likes.length}
+                <button
+                  className="btn btn-light dislikebutton"
+                  onClick={this.dislike.bind(this, book._id)}
+                >
+                  <i className="fa fa-thumbs-down" /> Disike
+                </button>
+              </small>
+            )}
             <p className="card-text">
               {this.snip(this.stripTags(book.bookdesc), 150)}
             </p>

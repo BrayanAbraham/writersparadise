@@ -125,6 +125,10 @@ const BookSchema = new Schema({
         type: Date,
         default: Date.now()
       },
+      commentUserHandle: {
+        type: String,
+        required: true
+      },
       commentUser: {
         type: Schema.Types.ObjectId,
         ref: "users"

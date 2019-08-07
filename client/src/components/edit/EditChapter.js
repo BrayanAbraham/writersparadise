@@ -68,13 +68,9 @@ class EditChapter extends Component {
     });
   }
 
-  onBlur(evt) {
-    console.log("onBlur event called with event info: ", evt);
-  }
+  onBlur(evt) {}
 
-  afterPaste(evt) {
-    console.log("afterPaste event called with event info: ", evt);
-  }
+  afterPaste(evt) {}
 
   onChange(event) {
     const target = event.target;

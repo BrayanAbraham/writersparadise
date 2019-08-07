@@ -420,11 +420,12 @@ router.post(
       .then(book => {
         const newComment = {
           commentBody: req.body.body,
-          commentUser: req.user.id
+          commentUser: req.user.id,
+          commentUserHandle: req.user.handle
         };
         book.comments.unshift(newComment);
         book.save().then(book =>
-          Book.findById(req.params.bookid)
+          Book.findById(req.params.id)
             .populate("user", ["handle"])
             .then(book => res.json(book))
             .catch(err => {
@@ -435,6 +436,12 @@ router.post(
       .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
   }
 );
+
+router.get("/sort/:id", (req, res) => {
+  Book.findOneAndUpdate({ id: req.params.id }, { $set: { comments: [] } }).then(
+    book => res.json(book)
+  );
+});
 
 router.delete(
   "/comment/:id/:commentid",
@@ -456,7 +463,7 @@ router.delete(
           .indexOf(req.params.commentid);
         book.comments.splice(removeIndex, 1);
         book.save().then(book =>
-          Book.findById(req.params.bookid)
+          Book.findById(req.params.id)
             .populate("user", ["handle"])
             .then(book => res.json(book))
             .catch(err => {

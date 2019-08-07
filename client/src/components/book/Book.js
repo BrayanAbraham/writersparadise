@@ -8,6 +8,7 @@ import isEmpty from "../../validation/is-empty";
 import classnames from "classnames";
 import BookChapters from "./BookChapters";
 import BookPlanner from "./BookPlanner";
+import BookComment from "./BookComment";
 
 class Book extends Component {
   constructor(props) {
@@ -104,6 +105,7 @@ class Book extends Component {
             <BookHeader book={book} />
             {choice}
             {restcontent}
+            {book.allowComments && <BookComment book={book} />}
           </div>
         );
       } else {

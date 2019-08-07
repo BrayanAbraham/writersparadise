@@ -36,12 +36,13 @@ class EditBook extends Component {
       const { book } = newProps.book;
       if (!isEmpty(book.genre)) {
         const genre = book.genre.join(",");
+        const bookdesc = book.bookdesc.replace(/<br\s*[\/]?>/gi, "\n");
         this.setState({
           title: book.title,
           status: book.status,
           allowComments: book.allowComments,
           genre: genre,
-          bookdesc: book.bookdesc
+          bookdesc: bookdesc
         });
       }
     }
@@ -49,13 +50,13 @@ class EditBook extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-
+    const bookdesc = this.state.bookdesc.replace(/\n/g, "<br />");
     const newBook = {
       title: this.state.title,
       status: this.state.status,
       allowComments: this.state.allowComments,
       genre: this.state.genre,
-      bookdesc: this.state.bookdesc,
+      bookdesc: bookdesc,
       user: this.props.auth.user._id
     };
     this.props.editBook(newBook, this.props.book.book._id, this.props.history);
