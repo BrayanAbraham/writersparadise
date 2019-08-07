@@ -30,13 +30,13 @@ class CreateBook extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-
+    const bookdesc = this.state.bookdesc.replace(/\n/g, "<br />");
     const newBook = {
       title: this.state.title,
       status: this.state.status,
       allowComments: this.state.allowComments,
       genre: this.state.genre,
-      bookdesc: this.state.bookdesc,
+      bookdesc: bookdesc,
       user: this.props.auth.user._id
     };
     this.props.addBook(newBook, this.props.history);
@@ -56,7 +56,6 @@ class CreateBook extends Component {
     const { errors } = this.state;
     const options = [
       { label: "*Select Status", value: "" },
-      { label: "Unpublished", value: "Unpublished" },
       { label: "Public", value: "Public" },
       { label: "Private", value: "Private" }
     ];

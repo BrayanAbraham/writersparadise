@@ -59,6 +59,11 @@ class Books extends Component {
     this.props.deleteBook(id);
   }
 
+  stripTags = input => {
+    input = input.replace(/<(?:.|\n)*?>/gm, "");
+    return input.replace(/&nbsp;/gm, "");
+  };
+
   render() {
     const { books, loading } = this.props.book;
     const { nobookfound } = this.props.errors;
@@ -126,7 +131,9 @@ class Books extends Component {
                 </button>
               </small>
             )}
-            <p className="card-text">{this.snip(book.bookdesc, 150)}</p>
+            <p className="card-text">
+              {this.snip(this.stripTags(book.bookdesc), 150)}
+            </p>
           </div>
         </div>
       </div>

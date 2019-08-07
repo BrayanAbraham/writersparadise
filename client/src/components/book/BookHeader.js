@@ -223,7 +223,7 @@ class BookHeader extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12 col-12">
-                    <p>{book.bookdesc}</p>
+                    <div dangerouslySetInnerHTML={{ __html: book.bookdesc }} />
                   </div>
                 </div>
                 <hr />

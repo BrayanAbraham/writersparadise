@@ -64,7 +64,7 @@ router.post(
     });
 
     newBook.save().then(book =>
-      Book.findById(req.params.id)
+      Book.findById(book._id)
         .populate("user", ["handle"])
         .then(book => res.json(book))
         .catch(err => {

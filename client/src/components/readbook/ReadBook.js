@@ -5,6 +5,7 @@ import { getBook } from "../../actions/bookActions";
 import isEmpty from "../../validation/is-empty";
 import Spinner from "../common/Spinner";
 import { Link } from "react-router-dom";
+import ScrollableAnchor from "react-scrollable-anchor";
 
 class ReadBook extends Component {
   componentDidMount() {
@@ -51,15 +52,18 @@ class ReadBook extends Component {
         .slice(0)
         .reverse()
         .map((chapter, index) => (
-          <div className="readbookchapter mb-3" key={index}>
-            <div className="readbookchaptertitle text-center mb-5">
-              <h1 style={{ fontFamily: "Times" }}>{chapter.title}</h1>
+          <ScrollableAnchor id={index.toString()} key={index}>
+            <div className="readbookchapter mb-3">
+              <div className="push-down" />
+              <div className="readbookchaptertitle text-center mb-5">
+                <h1 style={{ fontFamily: "Times" }}>{chapter.title}</h1>
+              </div>
+              <div className="readbookchaptercontent text-justify">
+                <div dangerouslySetInnerHTML={{ __html: chapter.body }} />
+              </div>
+              <hr className="bigHr col-11" />
             </div>
-            <div className="readbookchaptercontent text-justify">
-              <div dangerouslySetInnerHTML={{ __html: chapter.body }} />
-            </div>
-            <hr className="bigHr col-11" />
-          </div>
+          </ScrollableAnchor>
         ));
     }
 

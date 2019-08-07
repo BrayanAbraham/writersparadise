@@ -72,7 +72,9 @@ class BookChapters extends Component {
       .map((chapter, index) => (
         <tr key={index}>
           <th scope="col-2">{index + 1}</th>
-          <td>{chapter.title}</td>
+          <td>
+            <Link to={`/readbook/${book._id}#${index}`}>{chapter.title}</Link>
+          </td>
           <td>
             {this.getDeleteButton(chapter._id)}
             {this.getEditButton(chapter._id)}

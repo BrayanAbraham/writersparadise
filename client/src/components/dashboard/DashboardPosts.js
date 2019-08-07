@@ -58,6 +58,11 @@ class DashboardPosts extends Component {
     this.props.deleteBook(id, "user", this.props.auth.user.id);
   }
 
+  stripTags = input => {
+    input = input.replace(/<(?:.|\n)*?>/gm, "");
+    return input.replace(/&nbsp;/gm, "");
+  };
+
   render() {
     const { books } = this.props.book;
     let userbooks = books.map((book, index) => (
@@ -107,7 +112,9 @@ class DashboardPosts extends Component {
                 <i className="fa fa-thumbs-down" /> Disike
               </button>
             </small>
-            <p className="card-text">{this.snip(book.bookdesc, 150)}</p>
+            <p className="card-text">
+              {this.snip(this.stripTags(book.bookdesc), 150)}
+            </p>
           </div>
         </div>
       </div>

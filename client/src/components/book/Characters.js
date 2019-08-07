@@ -52,7 +52,10 @@ class Characters extends Component {
                 <div className="col-12">
                   <strong>Look:</strong>
                   <br />
-                  <div dangerouslySetInnerHTML={{ __html: character.look }} />
+                  <div
+                    className="text-justified"
+                    dangerouslySetInnerHTML={{ __html: character.look }}
+                  />
                 </div>
               )}
               {!isEmpty(character.behaviour) && (
@@ -60,6 +63,7 @@ class Characters extends Component {
                   <strong>Behaviour:</strong>
                   <br />
                   <div
+                    className="text-justified"
                     dangerouslySetInnerHTML={{ __html: character.behaviour }}
                   />
                 </div>
@@ -68,7 +72,10 @@ class Characters extends Component {
                 <div className="col-12">
                   <strong>About:</strong>
                   <br />
-                  <div dangerouslySetInnerHTML={{ __html: character.about }} />
+                  <div
+                    className="text-justified"
+                    dangerouslySetInnerHTML={{ __html: character.about }}
+                  />
                 </div>
               )}
             </div>
