@@ -7,6 +7,32 @@ import SelectListGroup from "../common/SelectListGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { withRouter } from "react-router-dom";
 import isEmpty from "../../validation/is-empty";
+import Autosuggest from "react-autosuggest";
+import filters from "../../utils/filters";
+
+const getSuggestions = value => {
+  const inputValue = value.trim().toLowerCase();
+  const inputLength = inputValue.length;
+
+  return inputLength === 0
+    ? []
+    : filters.filter(
+        filter => filter.name.toLowerCase().slice(0, inputLength) === inputValue
+      );
+};
+
+const searchfilter = value => {
+  for (let i = 0; i < filters.length; i++) {
+    if (filters[i].name === value) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const getSuggestionValue = suggestion => suggestion.name;
+
+const renderSuggestion = suggestion => <small>{suggestion.name}</small>;
 
 class EditBook extends Component {
   constructor(props) {
@@ -15,11 +41,17 @@ class EditBook extends Component {
       title: "",
       status: "",
       allowComments: true,
+      fiction: true,
       genre: "",
+      value: "",
+      genres: [],
+      suggestions: [],
       bookdesc: "",
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
+    this.onChangeRadio = this.onChangeRadio.bind(this);
+    this.onChangeGenre = this.onChangeGenre.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -35,14 +67,15 @@ class EditBook extends Component {
     if (newProps.book.book) {
       const { book } = newProps.book;
       if (!isEmpty(book.genre)) {
-        const genre = book.genre.join(",");
+        const genre = book.genre;
         const bookdesc = book.bookdesc.replace(/<br\s*[\/]?>/gi, "\n");
         this.setState({
           title: book.title,
           status: book.status,
           allowComments: book.allowComments,
-          genre: genre,
-          bookdesc: bookdesc
+          genres: genre,
+          bookdesc: bookdesc,
+          fiction: genre.includes("Fiction")
         });
       }
     }
@@ -51,11 +84,32 @@ class EditBook extends Component {
   onSubmit(e) {
     e.preventDefault();
     const bookdesc = this.state.bookdesc.replace(/\n/g, "<br />");
+    const genres = this.state.genres;
+    if (this.state.fiction) {
+      if (genres.includes("Fiction")) {
+      } else {
+        if (genres.includes("Non-Fiction")) {
+          const index = genres.indexOf("Non-Fiction");
+          genres.splice(index, 1);
+        }
+        genres.push("Fiction");
+      }
+    } else {
+      if (genres.includes("Non-Fiction")) {
+      } else {
+        if (genres.includes("Fiction")) {
+          const index = genres.indexOf("Fiction");
+          genres.splice(index, 1);
+        }
+        genres.push("Non-Fiction");
+      }
+    }
+    const genre = genres.join(",");
     const newBook = {
       title: this.state.title,
       status: this.state.status,
       allowComments: this.state.allowComments,
-      genre: this.state.genre,
+      genre: genre,
       bookdesc: bookdesc,
       user: this.props.auth.user._id
     };
@@ -72,13 +126,86 @@ class EditBook extends Component {
     });
   }
 
+  addgenre(e) {
+    e.preventDefault();
+    const genres = this.state.genres;
+    if (searchfilter(this.state.value) && !genres.includes(this.state.value)) {
+      genres.push(this.state.value);
+    }
+    this.setState({
+      genres: genres,
+      value: ""
+    });
+  }
+
+  onChangeRadio(event) {
+    const target = event.target;
+    const value = target.checked;
+    const name = target.name;
+    const id = target.id;
+    if (id === "fiction") {
+      this.setState({
+        [name]: value
+      });
+    } else {
+      this.setState({
+        [name]: !value
+      });
+    }
+  }
+
+  onChangeGenre(event, { newValue }) {
+    this.setState({
+      value: newValue
+    });
+  }
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: getSuggestions(value)
+    });
+  };
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
+  onRemoveGenre(item) {
+    const genres = this.state.genres;
+    genres.splice(item, 1);
+    this.setState({ genres: genres });
+  }
+
   render() {
-    const { errors } = this.state;
+    const { errors, value, suggestions } = this.state;
     const options = [
       { label: "*Select Status", value: "" },
       { label: "Public", value: "Public" },
       { label: "Private", value: "Private" }
     ];
+    const inputProps = {
+      placeholder: "Select a genre and click add or press enter",
+      value,
+      className: "form-control col-12",
+      onChange: this.onChangeGenre
+    };
+    let genres;
+    let indigenres = this.state.genres.map((item, index) => (
+      <div
+        className="btn btn-light mr-1"
+        key={index}
+        onClick={this.onRemoveGenre.bind(this, index)}
+      >
+        {item} | <i className="fa fa-times" />
+      </div>
+    ));
+    if (this.state.genres.length > 0) {
+      genres = <div className="border border-1 mb-2 p-1">{indigenres}</div>;
+    } else {
+      genres = null;
+    }
     return (
       <div className="create-book">
         <div className="container">
@@ -110,7 +237,29 @@ class EditBook extends Component {
                   />
                   <label htmlFor="allowComments">Allow Comments</label>
                 </div>
-                <TextFieldGroup
+                <div className="form-check form-group mb-3 mr-3 float-left">
+                  <input
+                    type="radio"
+                    className="form-check-input"
+                    name="fiction"
+                    id="fiction"
+                    checked={this.state.fiction}
+                    onChange={this.onChangeRadio}
+                  />
+                  <label htmlFor="fiction">Fiction</label>
+                </div>
+                <div className="form-check form-group mb-3 float-left">
+                  <input
+                    type="radio"
+                    className="form-check-input"
+                    name="fiction"
+                    id="non-fiction"
+                    checked={!this.state.fiction}
+                    onChange={this.onChangeRadio}
+                  />
+                  <label htmlFor="non-fiction">Non-Fiction</label>
+                </div>
+                {/* <TextFieldGroup
                   placeholder="Genre"
                   name="genre"
                   value={this.state.genre}
@@ -118,7 +267,28 @@ class EditBook extends Component {
                   error={errors.genre}
                   info="Please use comma separated values (eg.
                     Horror, Thriller, Action)"
+                /> */}
+                <div className="clearfix" />
+                {genres}
+                <Autosuggest
+                  suggestions={suggestions}
+                  onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                  onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                  getSuggestionValue={getSuggestionValue}
+                  renderSuggestion={renderSuggestion}
+                  inputProps={inputProps}
+                  theme={{
+                    suggestionsList: "list-group mylist",
+                    suggestionHighlighted: "text-primary point",
+                    suggestion: "list-group-item col-md-4 float-left d-block"
+                  }}
                 />
+                <button
+                  className="btn btn-primary col-2 mt-1 float-right"
+                  onClick={this.addgenre.bind(this)}
+                >
+                  Add
+                </button>
                 <TextAreaFieldGroup
                   placeholder="Short Description"
                   name="bookdesc"
