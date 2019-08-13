@@ -164,3 +164,7 @@ body {
 .push-down {
   min-height: 100px;
 }
+
+.mylist {
+  list-style-type: none;
+}

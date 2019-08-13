@@ -6,6 +6,32 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import SelectListGroup from "../common/SelectListGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { withRouter } from "react-router-dom";
+import Autosuggest from "react-autosuggest";
+import filters from "../../utils/filters";
+
+const getSuggestions = value => {
+  const inputValue = value.trim().toLowerCase();
+  const inputLength = inputValue.length;
+
+  return inputLength === 0
+    ? []
+    : filters.filter(
+        filter => filter.name.toLowerCase().slice(0, inputLength) === inputValue
+      );
+};
+
+const searchfilter = value => {
+  for (let i = 0; i < filters.length; i++) {
+    if (filters[i].name === value) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const getSuggestionValue = suggestion => suggestion.name;
+
+const renderSuggestion = suggestion => <small>{suggestion.name}</small>;
 
 class CreateBook extends Component {
   constructor(props) {
@@ -14,11 +40,17 @@ class CreateBook extends Component {
       title: "",
       status: "",
       allowComments: true,
+      fiction: true,
       genre: "",
+      value: "",
+      genres: [],
+      suggestions: [],
       bookdesc: "",
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
+    this.onChangeRadio = this.onChangeRadio.bind(this);
+    this.onChangeGenre = this.onChangeGenre.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -31,11 +63,18 @@ class CreateBook extends Component {
   onSubmit(e) {
     e.preventDefault();
     const bookdesc = this.state.bookdesc.replace(/\n/g, "<br />");
+    const genres = this.state.genres;
+    if (this.state.fiction) {
+      genres.push("Fiction");
+    } else {
+      genres.push("Non-Fiction");
+    }
+    const genre = genres.join(",");
     const newBook = {
       title: this.state.title,
       status: this.state.status,
       allowComments: this.state.allowComments,
-      genre: this.state.genre,
+      genre: genre,
       bookdesc: bookdesc,
       user: this.props.auth.user._id
     };
@@ -52,13 +91,86 @@ class CreateBook extends Component {
     });
   }
 
+  addgenre(e) {
+    e.preventDefault();
+    const genres = this.state.genres;
+    if (searchfilter(this.state.value) && !genres.includes(this.state.value)) {
+      genres.push(this.state.value);
+    }
+    this.setState({
+      genres: genres,
+      value: ""
+    });
+  }
+
+  onChangeRadio(event) {
+    const target = event.target;
+    const value = target.checked;
+    const name = target.name;
+    const id = target.id;
+    if (id === "fiction") {
+      this.setState({
+        [name]: value
+      });
+    } else {
+      this.setState({
+        [name]: !value
+      });
+    }
+  }
+
+  onChangeGenre(event, { newValue }) {
+    this.setState({
+      value: newValue
+    });
+  }
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: getSuggestions(value)
+    });
+  };
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
+  onRemoveGenre(item) {
+    const genres = this.state.genres;
+    genres.splice(item);
+    this.setState({ genres: genres });
+  }
+
   render() {
-    const { errors } = this.state;
+    const { errors, value, suggestions } = this.state;
     const options = [
       { label: "*Select Status", value: "" },
       { label: "Public", value: "Public" },
       { label: "Private", value: "Private" }
     ];
+    const inputProps = {
+      placeholder: "Select a genre and click add or press enter",
+      value,
+      className: "form-control col-12",
+      onChange: this.onChangeGenre
+    };
+    let genres;
+    let indigenres = this.state.genres.map((item, index) => (
+      <div
+        className="btn btn-light mr-1"
+        key={index}
+        onClick={this.onRemoveGenre.bind(this, index)}
+      >
+        {item} | <i className="fa fa-times" />
+      </div>
+    ));
+    if (this.state.genres.length > 0) {
+      genres = <div className="border border-1 mb-2 p-1">{indigenres}</div>;
+    } else {
+      genres = null;
+    }
     return (
       <div className="create-book">
         <div className="container">
@@ -90,7 +202,29 @@ class CreateBook extends Component {
                   />
                   <label htmlFor="allowComments">Allow Comments</label>
                 </div>
-                <TextFieldGroup
+                <div className="form-check form-group mb-3 mr-3 float-left">
+                  <input
+                    type="radio"
+                    className="form-check-input"
+                    name="fiction"
+                    id="fiction"
+                    checked={this.state.fiction}
+                    onChange={this.onChangeRadio}
+                  />
+                  <label htmlFor="fiction">Fiction</label>
+                </div>
+                <div className="form-check form-group mb-3 float-left">
+                  <input
+                    type="radio"
+                    className="form-check-input"
+                    name="fiction"
+                    id="non-fiction"
+                    checked={!this.state.fiction}
+                    onChange={this.onChangeRadio}
+                  />
+                  <label htmlFor="non-fiction">Non-Fiction</label>
+                </div>
+                {/* <TextFieldGroup
                   placeholder="Genre"
                   name="genre"
                   value={this.state.genre}
@@ -98,7 +232,28 @@ class CreateBook extends Component {
                   error={errors.genre}
                   info="Please use comma separated values (eg.
                     Horror, Thriller, Action)"
+                /> */}
+                <div className="clearfix" />
+                {genres}
+                <Autosuggest
+                  suggestions={suggestions}
+                  onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                  onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                  getSuggestionValue={getSuggestionValue}
+                  renderSuggestion={renderSuggestion}
+                  inputProps={inputProps}
+                  theme={{
+                    suggestionsList: "list-group mylist",
+                    suggestionHighlighted: "text-primary point",
+                    suggestion: "list-group-item col-md-4 float-left d-block"
+                  }}
                 />
+                <button
+                  className="btn btn-primary col-2 mt-1 float-right"
+                  onClick={this.addgenre.bind(this)}
+                >
+                  Add
+                </button>
                 <TextAreaFieldGroup
                   placeholder="Short Description"
                   name="bookdesc"
