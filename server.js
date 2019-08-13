@@ -5,6 +5,7 @@ const passport = require("passport");
 
 const users = require("./routes/api/users");
 const books = require("./routes/api/books");
+const poems = require("./routes/api/poems");
 const app = express();
 
 const db = require("./config/keys").mongoURI;
@@ -24,6 +25,7 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 app.use("/api/users", users);
+app.use("/api/poems", poems);
 app.use("/api/books", books);
 
 process.on("unhandledRejection", (reason, promise) => {
