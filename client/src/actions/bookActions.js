@@ -33,14 +33,15 @@ export const addBook = (postData, history) => dispatch => {
 export const getAllBooks = () => dispatch => {
   dispatch(setBookLoading());
   axios
-    .get("api/books")
-    .then(res =>
+    .get("/api/books")
+    .then(res => {
       dispatch({
         type: GET_BOOKS,
         payload: res.data
-      })
-    )
+      });
+    })
     .catch(err => {
+      console.log(err.response.data);
       dispatch({
         type: BOOK_NOT_FOUND,
         payload: {}
