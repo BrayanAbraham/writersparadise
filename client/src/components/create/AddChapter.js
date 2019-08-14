@@ -20,6 +20,8 @@ class AddChapter extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.updateContent = this.updateContent.bind(this);
     this.onChangeck = this.onChangeck.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.afterPaste = this.afterPaste.bind(this);
   }
 
   componentDidMount() {

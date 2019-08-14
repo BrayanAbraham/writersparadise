@@ -6,7 +6,8 @@ import {
   POEM_NOT_FOUND,
   GET_POEM,
   DELETE_POEM,
-  POEM_LOADING
+  POEM_LOADING,
+  CLEAR_ERRORS
 } from "./types";
 
 export const addPoem = (postData, history) => dispatch => {
@@ -223,7 +224,7 @@ export const clearErrors = () => {
   };
 };
 
-export const setBookLoading = () => {
+export const setPoemLoading = () => {
   return {
     type: POEM_LOADING
   };

@@ -18,10 +18,6 @@ module.exports = function validatePoemInput(data) {
     errors.body = "Body field is required";
   }
 
-  if (!Validator.isLength(data.body, { min: 20 })) {
-    errors.body = "Body must be alteast 20 characters long";
-  }
-
   return {
     errors,
     isValid: isEmpty(errors)
