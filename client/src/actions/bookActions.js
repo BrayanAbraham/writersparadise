@@ -273,7 +273,7 @@ export const deleteChapterDesc = (bookid, plotlineid) => dispatch => {
 };
 
 export const getBooksByUser = user => dispatch => {
-  dispatch(setBookLoading);
+  dispatch(setBookLoading());
   axios
     .get(`/api/books/user/${user}`)
     .then(res => {
