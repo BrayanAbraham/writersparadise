@@ -132,7 +132,7 @@ export const deleteComment = (poemid, commentid) => dispatch => {
 export const getPoemByUser = user => dispatch => {
   dispatch(setPoemLoading());
   axios
-    .get(`/api/books/user/${user}`)
+    .get(`/api/poems/user/${user}`)
     .then(res => {
       dispatch({
         type: GET_POEMS,

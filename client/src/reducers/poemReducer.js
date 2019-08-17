@@ -3,7 +3,8 @@ import {
   GET_POEM,
   ADD_POEM,
   DELETE_POEM,
-  POEM_NOT_FOUND
+  POEM_NOT_FOUND,
+  GET_POEMS
 } from "../actions/types";
 
 const initialState = {
@@ -17,6 +18,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true
+      };
+    case GET_POEMS:
+      return {
+        ...state,
+        poems: action.payload,
+        loading: false
       };
     case GET_POEM:
       return {
