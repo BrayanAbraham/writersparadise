@@ -136,7 +136,7 @@ class DashboardPosts extends Component {
                 </small>
               )}
               <p className="card-text">
-                {this.snip(this.stripTags(book.bookdesc), 150)}
+                {this.snip(this.stripTags(book.bookdesc), 20)}
               </p>
             </div>
           </div>

@@ -125,7 +125,9 @@ class DashboardPoems extends Component {
                 </button>
               </small>
             )}
-            <p className="card-text">{this.snip(this.stripTags(poem.body))}</p>
+            <p className="card-text">
+              {this.snip(this.stripTags(poem.body), 20)}
+            </p>
           </div>
         </div>
       </div>
