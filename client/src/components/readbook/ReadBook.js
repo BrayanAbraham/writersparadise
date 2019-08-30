@@ -34,7 +34,7 @@ class ReadBook extends Component {
           <img
             src={require(`../../../../public/uploads/${name}`)}
             alt=""
-            className="card-img-top"
+            className="card-img-top read-img"
           />
         </div>
       );

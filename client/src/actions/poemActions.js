@@ -200,7 +200,7 @@ export const deletePoem = id => dispatch => {
   }
 };
 
-export const uploadimage = (formData, config, poemid) => dispatch => {
+export const uploadimage = (formData, config, poemid, history) => dispatch => {
   dispatch(clearErrors());
   axios
     .post(`/api/poems/upload/${poemid}`, formData, config)
@@ -209,6 +209,7 @@ export const uploadimage = (formData, config, poemid) => dispatch => {
         type: GET_POEMS,
         payload: res.data
       });
+      history.push(`/poem/${res.data._id}`);
     })
     .catch(err =>
       dispatch({

@@ -66,80 +66,82 @@ class DashboardPosts extends Component {
 
   render() {
     const { books } = this.props.book;
-    let userbooks = books.map((book, index) => (
-      <div className="book col-md-4 col-sm-6" key={index}>
-        <div className="card h-100">
-          <Link to={`/book/${book._id}`}>{this.getImage(book.image)}</Link>
-          <div className="card-body text-center">
-            <Link to={`/book/${book._id}`} style={{ textDecoration: "none" }}>
-              <h5 className="card-title">{book.title}</h5>
-            </Link>
-            <div className="text-white">
-              <small className="bg-primary pr-2 pl-2 pt-1 pb-1">
-                {book.status}
-              </small>
-            </div>
-            <small>
-              {book.user.handle !== this.props.auth.user.handle && (
-                <span>
-                  <i className="fa fa-align-justify ml-3" />{" "}
-                  {book.chapters.length}
-                </span>
-              )}
-              {book.user.handle === this.props.auth.user.handle && (
-                <span>
-                  <span className="point">
-                    <Link
-                      to={`/edit-book/${book._id}`}
-                      className="likebutton"
-                      style={{ textDecoration: "none" }}
+    let userbooks = null;
+    if (books)
+      userbooks = books.map((book, index) => (
+        <div className="book col-md-4 col-sm-6" key={index}>
+          <div className="card h-100">
+            <Link to={`/book/${book._id}`}>{this.getImage(book.image)}</Link>
+            <div className="card-body text-center">
+              <Link to={`/book/${book._id}`} style={{ textDecoration: "none" }}>
+                <h5 className="card-title">{book.title}</h5>
+              </Link>
+              <div className="text-white">
+                <small className="bg-primary pr-2 pl-2 pt-1 pb-1">
+                  {book.status}
+                </small>
+              </div>
+              <small>
+                {book.user.handle !== this.props.auth.user.handle && (
+                  <span>
+                    <i className="fa fa-align-justify ml-3" />{" "}
+                    {book.chapters.length}
+                  </span>
+                )}
+                {book.user.handle === this.props.auth.user.handle && (
+                  <span>
+                    <span className="point">
+                      <Link
+                        to={`/edit-book/${book._id}`}
+                        className="likebutton"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <i className="fa fa-pencil" /> Edit
+                      </Link>
+                    </span>
+                    <i className="fa fa-align-justify ml-3" />{" "}
+                    {book.chapters.length}
+                    <span
+                      className="point dislikebutton"
+                      onClick={this.deleteBook.bind(this, book._id)}
                     >
-                      <i className="fa fa-pencil" /> Edit
-                    </Link>
+                      <i className="fa fa-times ml-3" /> Delete
+                    </span>
                   </span>
-                  <i className="fa fa-align-justify ml-3" />{" "}
-                  {book.chapters.length}
-                  <span
-                    className="point dislikebutton"
-                    onClick={this.deleteBook.bind(this, book._id)}
+                )}
+                {isEmpty(this.props.auth.user) && (
+                  <span>
+                    <i className="fa fa-heart text-danger ml-2" />{" "}
+                    {book.likes.length}
+                  </span>
+                )}
+              </small>
+              <br />
+              {!isEmpty(this.props.auth.user) && (
+                <small>
+                  <button
+                    className="btn btn-light likebutton"
+                    onClick={this.like.bind(this, book._id)}
                   >
-                    <i className="fa fa-times ml-3" /> Delete
-                  </span>
-                </span>
-              )}
-              {isEmpty(this.props.auth.user) && (
-                <span>
+                    <i className="fa fa-thumbs-up" /> Like
+                  </button>
                   <i className="fa fa-heart text-danger ml-2" />{" "}
                   {book.likes.length}
-                </span>
+                  <button
+                    className="btn btn-light dislikebutton"
+                    onClick={this.dislike.bind(this, book._id)}
+                  >
+                    <i className="fa fa-thumbs-down" /> Disike
+                  </button>
+                </small>
               )}
-            </small>
-            <br />
-            {!isEmpty(this.props.auth.user) && (
-              <small>
-                <button
-                  className="btn btn-light likebutton"
-                  onClick={this.like.bind(this, book._id)}
-                >
-                  <i className="fa fa-thumbs-up" /> Like
-                </button>
-                <i className="fa fa-heart text-danger ml-2" />{" "}
-                {book.likes.length}
-                <button
-                  className="btn btn-light dislikebutton"
-                  onClick={this.dislike.bind(this, book._id)}
-                >
-                  <i className="fa fa-thumbs-down" /> Disike
-                </button>
-              </small>
-            )}
-            <p className="card-text">
-              {this.snip(this.stripTags(book.bookdesc), 150)}
-            </p>
+              <p className="card-text">
+                {this.snip(this.stripTags(book.bookdesc), 150)}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    ));
+      ));
     return <div className="row">{userbooks}</div>;
   }
 }

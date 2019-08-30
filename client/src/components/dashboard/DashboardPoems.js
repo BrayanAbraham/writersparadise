@@ -69,7 +69,7 @@ class DashboardPoems extends Component {
     let userpoems = poems.map((poem, index) => (
       <div className="poem col-md-4 col-sm-6" key={index}>
         <div className="card h-100">
-          <Link to={`/poem/${poem._id}`}>{this.getImage(poem.image)}</Link>
+          {/* <Link to={`/poem/${poem._id}`}>{this.getImage(poem.image)}</Link> */}
           <div className="card-body text-center">
             <Link to={`/poem/${poem._id}`} style={{ textDecoration: "none" }}>
               <h5 className="card-title">{poem.title}</h5>
@@ -125,6 +125,7 @@ class DashboardPoems extends Component {
                 </button>
               </small>
             )}
+            <p className="card-text">{this.snip(this.stripTags(poem.body))}</p>
           </div>
         </div>
       </div>
