@@ -33,9 +33,9 @@ class Navbar extends Component {
             <Link className="dropdown-item point item-hover" to="/create-book">
               New Book
             </Link>
-            <Link className="dropdown-item point item-hover" to="/create-poem">
+            {/* <Link className="dropdown-item point item-hover" to="/create-poem">
               New Poem
-            </Link>
+            </Link> */}
           </div>
         </li>
         <li className="nav-item dropdown">
