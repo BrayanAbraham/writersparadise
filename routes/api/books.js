@@ -2,6 +2,7 @@ const express = require("express");
 const passport = require("passport");
 const path = require("path");
 const multer = require("multer");
+const fs = require("fs");
 
 const User = require("../../models/User");
 const Book = require("../../models/Book");
@@ -159,7 +160,14 @@ router.delete(
               .status(401)
               .json({ notauthorized: "User Not Authorized" });
           }
-          book.remove().then(() => res.json({ success: true }));
+          const delpath = "./public/uploads/" + book.image;
+          console.log(delpath);
+          fs.unlink(delpath, err => {
+            if (err) {
+              return res.status(404).json({ nobookfound: "Book not found" });
+            }
+            book.remove().then(() => res.json({ success: true }));
+          });
         })
         .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
     });
@@ -682,6 +690,14 @@ router.post(
       if (!err && req.file) {
         Book.findById(req.params.id).then(book => {
           if (book) {
+            if (book.image !== "noimage") {
+              const delpath = "./public/uploads/" + book.image;
+              try {
+                fs.unlinkSync(delpath);
+              } catch (err) {
+                console.log(err);
+              }
+            }
             Book.updateOne(
               { _id: req.params.id },
               {

@@ -48,20 +48,15 @@ function App() {
             <Switch>
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
-
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
-
               <PrivateRoute exact path="/create-book" component={CreateBook} />
-
               {/* <Switch>
               <PrivateRoute exact path="/create-poem" component={CreatePoem} />
             </Switch> */}
               {/* <Switch>
               <PrivateRoute exact path="/edit-poem/:id" component={EditPoem} />
             </Switch> */}
-
               <PrivateRoute exact path="/edit-book/:id" component={EditBook} />
-
               <PrivateRoute
                 exact
                 path="/add-chapter/:bookid"

@@ -333,12 +333,14 @@ export const deleteBook = id => dispatch => {
           payload: id
         })
       )
-      .catch(err =>
-        dispatch({
-          type: GET_ERRORS,
-          payload: err.response.data
-        })
-      );
+      .catch(err => {
+        if (err.response !== undefined) {
+          dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+          });
+        }
+      });
   }
 };
 
