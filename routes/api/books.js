@@ -722,8 +722,6 @@ router.post(
           }
         });
       } else {
-        console.log(err);
-        console.log("hi");
         const errors = {};
         if (err !== undefined && err.name === "MulterError") {
           errors.file = "File Too Large";
