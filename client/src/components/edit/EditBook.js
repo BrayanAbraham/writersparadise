@@ -211,7 +211,7 @@ class EditBook extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-10 m-auto">
-              <h1 className="display-4 text-center">Create A New Book</h1>
+              <h1 className="display-4 text-center">Edit Book</h1>
               <form noValidate onSubmit={this.onSubmit}>
                 <TextFieldGroup
                   placeholder="Title"

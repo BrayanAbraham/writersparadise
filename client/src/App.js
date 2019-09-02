@@ -23,6 +23,7 @@ import ReadBook from "./components/readbook/ReadBook";
 import FilterBooks from "./components/books/FilterBooks";
 import CreatePoem from "./components/create/CreatePoem";
 import ReadPoem from "./components/poem/ReadPoem";
+import EditPoem from "./components/edit/EditPoem";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -76,6 +77,9 @@ function App() {
             <Route exact path="/readbook/:id" component={ReadBook} />
             <Route exact path="/poem/:id" component={ReadPoem} />
             <Route exact path="/books/:filter" component={FilterBooks} />
+            <Switch>
+              <PrivateRoute exact path="/edit-poem/:id" component={EditPoem} />
+            </Switch>
           </div>
           <Footer />
         </div>
