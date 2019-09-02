@@ -21,6 +21,7 @@ import Books from "./components/books/Books";
 import EditChapter from "./components/edit/EditChapter";
 import ReadBook from "./components/readbook/ReadBook";
 import FilterBooks from "./components/books/FilterBooks";
+import NoMatch from "./components/layout/NoMatch";
 // import CreatePoem from "./components/create/CreatePoem";
 // import ReadPoem from "./components/poem/ReadPoem";
 // import EditPoem from "./components/edit/EditPoem";
@@ -44,42 +45,40 @@ function App() {
           <Navbar />
           <Route exact path="/" component={Landing} />
           <div className="container">
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
             <Switch>
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            </Switch>
-            <Switch>
+
               <PrivateRoute exact path="/create-book" component={CreateBook} />
-            </Switch>
-            {/* <Switch>
+
+              {/* <Switch>
               <PrivateRoute exact path="/create-poem" component={CreatePoem} />
             </Switch> */}
-            {/* <Switch>
+              {/* <Switch>
               <PrivateRoute exact path="/edit-poem/:id" component={EditPoem} />
             </Switch> */}
-            <Switch>
+
               <PrivateRoute exact path="/edit-book/:id" component={EditBook} />
-            </Switch>
-            <Switch>
+
               <PrivateRoute
                 exact
                 path="/add-chapter/:bookid"
                 component={AddChapter}
               />
-            </Switch>
-            <Switch>
               <PrivateRoute
                 exact
                 path="/chapter-edit/:bookid/:id"
                 component={EditChapter}
               />
+              <Route exact path="/books" component={Books} />
+              <Route exact path="/book/:id" component={Book} />
+              <Route exact path="/readbook/:id" component={ReadBook} />
+              {/* <Route exact path="/poem/:id" component={ReadPoem} /> */}
+              <Route exact path="/books/:filter" component={FilterBooks} />
+              <Route component={NoMatch}></Route>
             </Switch>
-            <Route exact path="/books" component={Books} />
-            <Route exact path="/book/:id" component={Book} />
-            <Route exact path="/readbook/:id" component={ReadBook} />
-            {/* <Route exact path="/poem/:id" component={ReadPoem} /> */}
-            <Route exact path="/books/:filter" component={FilterBooks} />
           </div>
           <Footer />
         </div>
