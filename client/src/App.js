@@ -28,6 +28,8 @@ import CreatePoem from "./components/create/CreatePoem";
 import ReadPoem from "./components/poem/ReadPoem";
 import EditPoem from "./components/edit/EditPoem";
 import CreateShort from "./components/create/CreateShort";
+import EditShort from "./components/edit/EditShort";
+import ReadShort from "./components/short/ReadShort";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -82,10 +84,16 @@ function App() {
                 path="/edit-profile"
                 component={EditProfile}
               ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path="/edit-short/:id"
+                component={EditShort}
+              ></PrivateRoute>
               <Route exact path="/books" component={Books} />
               <Route exact path="/book/:id" component={Book} />
               <Route exact path="/readbook/:id" component={ReadBook} />
               <Route exact path="/poem/:id" component={ReadPoem} />
+              <Route exact path="/short/:id" component={ReadShort}></Route>
               <Route component={NoMatch}></Route>
             </Switch>
           </div>

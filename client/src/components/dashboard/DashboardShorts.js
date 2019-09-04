@@ -67,7 +67,7 @@ class DashboardShorts extends Component {
   render() {
     const { shorts } = this.props.short;
     let usershorts = shorts.map((short, index) => (
-      <div className="short col-md-4 col-sm-6" key={index}>
+      <div className="short col-md-3 col-sm-6" key={index}>
         <div className="card h-100">
           {/* <Link to={`/short/${short._id}`}>{this.getImage(short.image)}</Link> */}
           <div className="card-body text-center">

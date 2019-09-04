@@ -67,7 +67,7 @@ class DashboardPoems extends Component {
   render() {
     const { poems } = this.props.poem;
     let userpoems = poems.map((poem, index) => (
-      <div className="poem col-md-4 col-sm-6" key={index}>
+      <div className="poem col-md-3 col-sm-6" key={index}>
         <div className="card h-100">
           {/* <Link to={`/poem/${poem._id}`}>{this.getImage(poem.image)}</Link> */}
           <div className="card-body text-center">
