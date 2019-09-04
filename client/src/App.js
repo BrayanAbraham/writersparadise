@@ -20,14 +20,13 @@ import EditBook from "./components/edit/EditBook";
 import Books from "./components/books/Books";
 import EditChapter from "./components/edit/EditChapter";
 import ReadBook from "./components/readbook/ReadBook";
-import FilterBooks from "./components/books/FilterBooks";
 import NoMatch from "./components/layout/NoMatch";
 import { clearCurrentProfile } from "./actions/profileActions";
 import CreateProfile from "./components/create-profile/CreateProfile";
 import EditProfile from "./components/edit-profile/EditProfile";
-// import CreatePoem from "./components/create/CreatePoem";
-// import ReadPoem from "./components/poem/ReadPoem";
-// import EditPoem from "./components/edit/EditPoem";
+import CreatePoem from "./components/create/CreatePoem";
+import ReadPoem from "./components/poem/ReadPoem";
+import EditPoem from "./components/edit/EditPoem";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -54,12 +53,8 @@ function App() {
               <Route exact path="/login" component={Login} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/create-book" component={CreateBook} />
-              {/* <Switch>
               <PrivateRoute exact path="/create-poem" component={CreatePoem} />
-            </Switch> */}
-              {/* <Switch>
               <PrivateRoute exact path="/edit-poem/:id" component={EditPoem} />
-            </Switch> */}
               <PrivateRoute exact path="/edit-book/:id" component={EditBook} />
               <PrivateRoute
                 exact
@@ -84,8 +79,7 @@ function App() {
               <Route exact path="/books" component={Books} />
               <Route exact path="/book/:id" component={Book} />
               <Route exact path="/readbook/:id" component={ReadBook} />
-              {/* <Route exact path="/poem/:id" component={ReadPoem} /> */}
-              <Route exact path="/books/:filter" component={FilterBooks} />
+              <Route exact path="/poem/:id" component={ReadPoem} />
               <Route component={NoMatch}></Route>
             </Switch>
           </div>

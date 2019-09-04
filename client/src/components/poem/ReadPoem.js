@@ -60,7 +60,7 @@ class ReadPoem extends Component {
       if (Object.keys(poem).length > 0) {
         if (!isEmpty(user) && poem.user.handle === user.handle) {
           writeroptions.edit = (
-            <Link className="btn btn-light" to={`/edit-poem/${poem._id}`}>
+            <Link className="btn btn-light mr-2" to={`/edit-poem/${poem._id}`}>
               <i className="fa fa-pencil" /> Edit
             </Link>
           );
@@ -118,7 +118,7 @@ class ReadPoem extends Component {
                   {poem.likes.length}
                   {writeroptions.dislikebuttons}
                 </div>
-                <div className="text-justify">
+                <div className="text-justify text-center">
                   <div dangerouslySetInnerHTML={{ __html: poem.body }} />
                 </div>
               </div>

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import DashboardHeader from "./DashboardHeader";
 import DashboardPosts from "./DashboardPosts";
-///import DashboardPoems from "./DashboardPoems";
+import DashboardPoems from "./DashboardPoems";
 import { getBooksByUser } from "../../actions/bookActions";
 import { getPoemByUser } from "../../actions/poemActions";
 
@@ -29,17 +29,17 @@ class Dashboard extends Component {
       );
     }
 
-    // if (this.props.poem.poems.length > 0) {
-    //   poems = (
-    //     <div>
-    //       <hr />
-    //       <div className="row text-center">
-    //         <h1 className="col-md-12 display-4 text-center">Poems</h1>
-    //       </div>
-    //       <DashboardPoems user={user} />
-    //     </div>
-    //   );
-    // }
+    if (this.props.poem.poems.length > 0) {
+      poems = (
+        <div>
+          <hr />
+          <div className="row text-center">
+            <h1 className="col-md-12 display-4 text-center">Poems</h1>
+          </div>
+          <DashboardPoems user={user} />
+        </div>
+      );
+    }
 
     return (
       <div className="dashboard">

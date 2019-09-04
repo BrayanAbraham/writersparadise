@@ -153,6 +153,7 @@ router.get("/:id", (req, res) => {
 
 router.get("/user/:user", (req, res) => {
   Poem.find({ user: req.params.user })
+  .sort({ date: -1 })
     .populate("user", ["handle"])
     .then(poem => res.json(poem))
     .catch(err => res.status(404).json({ nopoemfound: "Poem not found" }));

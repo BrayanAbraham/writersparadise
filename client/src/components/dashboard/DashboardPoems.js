@@ -60,8 +60,8 @@ class DashboardPoems extends Component {
   }
 
   stripTags = input => {
-    input = input.replace(/<(?:.|\n)*?>/gm, "");
-    return input.replace(/&nbsp;/gm, "");
+    input = input.replace(/<(?:.|\n)*?>/gm, " ");
+    return input.replace(/&nbsp;/gm, " ");
   };
 
   render() {

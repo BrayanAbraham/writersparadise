@@ -234,12 +234,12 @@ class DashboardHeader extends Component {
                     </p>
                   </div>
                 </div>
-                <hr />
+                {/* <hr />
                 <div className="row">
                   <div className="col-md-6">Books : {profile.books}</div>
                   <div className="col-md-6">Likes : {profile.like}</div>
                   <div className="col-md-6">Comments : {profile.comments}</div>
-                </div>
+                </div> */}
                 <hr />
                 <div className="row">
                   {!isEmpty(profile.bio) ? (

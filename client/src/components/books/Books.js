@@ -60,8 +60,8 @@ class Books extends Component {
   }
 
   stripTags = input => {
-    input = input.replace(/<(?:.|\n)*?>/gm, "");
-    return input.replace(/&nbsp;/gm, "");
+    input = input.replace(/<(?:.|\n)*?>/gm, " ");
+    return input.replace(/&nbsp;/gm, " ");
   };
 
   render() {
@@ -69,7 +69,7 @@ class Books extends Component {
     const { nobookfound } = this.props.errors;
 
     let allbooks = books.map((book, index) => (
-      <div className="book col-md-4 col-sm-6" key={index}>
+      <div className="book col-md-3 col-sm-6" key={index}>
         <div className="card h-100">
           <Link to={`/book/${book._id}`}>{this.getImage(book.image)}</Link>
           <div className="card-body text-center">
@@ -132,7 +132,7 @@ class Books extends Component {
               </small>
             )}
             <p className="card-text">
-              {this.snip(this.stripTags(book.bookdesc), 150)}
+              {this.snip(this.stripTags(book.bookdesc), 100)}
             </p>
           </div>
         </div>
