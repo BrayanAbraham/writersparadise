@@ -24,7 +24,7 @@ const PoemSchema = new Schema({
   },
   image: {
     type: String,
-    required: true
+    default: "noimage"
   },
   comments: [
     {

@@ -6,17 +6,21 @@ import DashboardPosts from "./DashboardPosts";
 import DashboardPoems from "./DashboardPoems";
 import { getBooksByUser } from "../../actions/bookActions";
 import { getPoemByUser } from "../../actions/poemActions";
+import { getShortStoryByUser } from "../../actions/shortStoryActions";
+import DashboardShorts from "./DashboardShorts";
 
 class Dashboard extends Component {
   componentWillMount() {
     const { user } = this.props.auth;
     this.props.getBooksByUser(user.id);
     this.props.getPoemByUser(user.id);
+    this.props.getShortStoryByUser(user.id);
   }
   render() {
     const { user } = this.props.auth;
     let books = null;
     let poems = null;
+    let shorts = null;
     if (this.props.book.books.length > 0) {
       books = (
         <div>
@@ -41,6 +45,18 @@ class Dashboard extends Component {
       );
     }
 
+    if (this.props.short.shorts.length > 0) {
+      shorts = (
+        <div>
+          <hr />
+          <div className="row text-center">
+            <h1 className="col-md-12 display-4 text-center">Short Stories</h1>
+          </div>
+          <DashboardShorts user={user} />
+        </div>
+      );
+    }
+
     return (
       <div className="dashboard">
         <div className="row">
@@ -48,6 +64,7 @@ class Dashboard extends Component {
             <DashboardHeader user={user} />
             {books}
             {poems}
+            {shorts}
           </div>
         </div>
       </div>
@@ -59,16 +76,20 @@ Dashboard.propTypes = {
   auth: PropTypes.object.isRequired,
   getBooksByUser: PropTypes.func.isRequired,
   book: PropTypes.object.isRequired,
-  poem: PropTypes.object.isRequired
+  poem: PropTypes.object.isRequired,
+  getPoemByUser: PropTypes.func.isRequired,
+  getShortStoryByUser: PropTypes.func.isRequired,
+  short: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   book: state.book,
-  poem: state.poem
+  poem: state.poem,
+  short: state.short
 });
 
 export default connect(
   mapStateToProps,
-  { getBooksByUser, getPoemByUser }
+  { getBooksByUser, getPoemByUser, getShortStoryByUser }
 )(Dashboard);

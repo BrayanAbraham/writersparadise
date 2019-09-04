@@ -6,6 +6,7 @@ const passport = require("passport");
 const users = require("./routes/api/users");
 const books = require("./routes/api/books");
 const poems = require("./routes/api/poems");
+const shorts = require("./routes/api/shortstories");
 const profile = require("./routes/api/profile");
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/users", users);
 app.use("/api/poems", poems);
 app.use("/api/profile", profile);
 app.use("/api/books", books);
+app.use("/api/shorts", shorts);
 
 process.on("unhandledRejection", (reason, promise) => {
   console.log("Unhandled Rejection at:", reason.stack || reason);

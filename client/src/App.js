@@ -27,6 +27,7 @@ import EditProfile from "./components/edit-profile/EditProfile";
 import CreatePoem from "./components/create/CreatePoem";
 import ReadPoem from "./components/poem/ReadPoem";
 import EditPoem from "./components/edit/EditPoem";
+import CreateShort from "./components/create/CreateShort";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -54,6 +55,11 @@ function App() {
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
               <PrivateRoute exact path="/create-book" component={CreateBook} />
               <PrivateRoute exact path="/create-poem" component={CreatePoem} />
+              <PrivateRoute
+                exact
+                path="/create-short"
+                component={CreateShort}
+              />
               <PrivateRoute exact path="/edit-poem/:id" component={EditPoem} />
               <PrivateRoute exact path="/edit-book/:id" component={EditBook} />
               <PrivateRoute
