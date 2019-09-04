@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 
 const users = require("./routes/api/users");
+const thoughts = require("./routes/api/thoughts");
 const books = require("./routes/api/books");
 const poems = require("./routes/api/poems");
 const shorts = require("./routes/api/shortstories");
@@ -31,6 +32,7 @@ app.use("/api/poems", poems);
 app.use("/api/profile", profile);
 app.use("/api/books", books);
 app.use("/api/shorts", shorts);
+app.use("/api/quotes", thoughts);
 
 process.on("unhandledRejection", (reason, promise) => {
   console.log("Unhandled Rejection at:", reason.stack || reason);
