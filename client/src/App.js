@@ -22,6 +22,9 @@ import EditChapter from "./components/edit/EditChapter";
 import ReadBook from "./components/readbook/ReadBook";
 import FilterBooks from "./components/books/FilterBooks";
 import NoMatch from "./components/layout/NoMatch";
+import { clearCurrentProfile } from "./actions/profileActions";
+import CreateProfile from "./components/create-profile/CreateProfile";
+import EditProfile from "./components/edit-profile/EditProfile";
 // import CreatePoem from "./components/create/CreatePoem";
 // import ReadPoem from "./components/poem/ReadPoem";
 // import EditPoem from "./components/edit/EditPoem";
@@ -33,6 +36,7 @@ if (localStorage.jwtToken) {
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
     store.dispatch(logoutUser());
+    store.dispatch(clearCurrentProfile());
     window.location.href = "/login";
   }
 }
@@ -67,6 +71,16 @@ function App() {
                 path="/chapter-edit/:bookid/:id"
                 component={EditChapter}
               />
+              <PrivateRoute
+                exact
+                path="/create-profile"
+                component={CreateProfile}
+              ></PrivateRoute>
+              <PrivateRoute
+                exact
+                path="/edit-profile"
+                component={EditProfile}
+              ></PrivateRoute>
               <Route exact path="/books" component={Books} />
               <Route exact path="/book/:id" component={Book} />
               <Route exact path="/readbook/:id" component={ReadBook} />

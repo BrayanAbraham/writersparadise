@@ -13,3 +13,7 @@ export const GET_POEM = "GET_POEM";
 export const ADD_POEM = "ADD_POEM";
 export const DELETE_POEM = "DELETE_POEM";
 export const POEM_NOT_FOUND = "POEM_NOT_FOUND";
+export const GET_PROFILE = "GET_PROFILE";
+export const GET_PROFILES = "GET_PROFILES";
+export const PROFILE_LOADING = "PROFILE_LOADING";
+export const CLEAR_CURRENT_PROFILE = "CLEAR_CURRENT_PROFILE";

@@ -78,7 +78,7 @@ router.get("/user/:user_id", (req, res) => {
   const errors = {};
 
   Profile.findOne({ user: req.params.user_id })
-    .populate("user", ["name"])
+    .populate("user", ["name", "email", "handle"])
     .then(profile => {
       if (!profile) {
         errors.noprofile = "There is no profile for this user";
@@ -96,7 +96,7 @@ router.get("/handle/:handle", (req, res) => {
   const errors = {};
 
   Profile.findOne({ handle: req.params.handle })
-    .populate("user", ["name"])
+    .populate("user", ["name", "email", "handle"])
     .then(profile => {
       if (!profile) {
         errors.noprofile = "There is no profile for this user";
@@ -131,7 +131,7 @@ router.get(
     const errors = {};
 
     Profile.findOne({ user: req.user.id })
-      .populate("user", ["name"])
+      .populate("user", ["name", "email", "handle"])
       .then(profile => {
         if (!profile) {
           errors.noprofile = "There is no profile for this user";
@@ -152,7 +152,7 @@ router.post(
       // console.log("Request file ---", req.file); //Here you get file.
       /*Now do where ever you want to do*/
       if (!err && req.file) {
-        Profile.find({ user: req.user.id }).then(profile => {
+        Profile.findOne({ user: req.user.id }).then(profile => {
           if (profile) {
             if (profile.image !== "noimage") {
               const delpath = "./public/uploads/" + profile.image;
