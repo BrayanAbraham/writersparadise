@@ -171,7 +171,7 @@ router.post(
               }
             )
               .then(profile =>
-                Profile.find({ user: req.user.id })
+                Profile.findOne({ user: req.user.id })
                   .populate("user", ["name", "email", "handle"])
                   .then(profile => res.json(profile))
                   .catch(err =>
