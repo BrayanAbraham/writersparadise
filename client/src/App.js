@@ -30,6 +30,7 @@ import EditPoem from "./components/edit/EditPoem";
 import CreateShort from "./components/create/CreateShort";
 import EditShort from "./components/edit/EditShort";
 import ReadShort from "./components/short/ReadShort";
+import Poems from "./components/poem/Poems";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -94,6 +95,7 @@ function App() {
               <Route exact path="/readbook/:id" component={ReadBook} />
               <Route exact path="/poem/:id" component={ReadPoem} />
               <Route exact path="/short/:id" component={ReadShort}></Route>
+              <Route exact path="/poems" component={Poems}></Route>
               <Route component={NoMatch}></Route>
             </Switch>
           </div>

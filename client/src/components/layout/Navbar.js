@@ -112,7 +112,7 @@ class Navbar extends Component {
                   Books
                 </Link>
               </li>
-              {/* <li className="nav-item">
+              <li className="nav-item">
                 <Link className="nav-link" to="/poems">
                   Poems
                 </Link>
@@ -122,11 +122,6 @@ class Navbar extends Component {
                   Short Stories
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/thoughts">
-                  Quotes
-                </Link>
-              </li> */}
             </ul>
             {isAuthenticated ? authlinks : guestlinks}
           </div>
