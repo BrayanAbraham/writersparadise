@@ -11,6 +11,7 @@ import {
 import isEmpty from "../../validation/is-empty";
 import Spinner from "../common/Spinner";
 import { Link, withRouter } from "react-router-dom";
+import PoemComment from "./PoemComment";
 
 class ReadPoem extends Component {
   componentDidMount() {
@@ -129,7 +130,12 @@ class ReadPoem extends Component {
         content = <h1>POEM NOT FOUND</h1>;
       }
     }
-    return <div>{content}</div>;
+    return (
+      <div>
+        {content}
+        {poem.allowComments && <PoemComment poem={poem}></PoemComment>}
+      </div>
+    );
   }
 }
 

@@ -10,6 +10,7 @@ import {
 import isEmpty from "../../validation/is-empty";
 import Spinner from "../common/Spinner";
 import { Link, withRouter } from "react-router-dom";
+import ShortComments from "./ShortComments";
 
 class ReadShort extends Component {
   componentDidMount() {
@@ -131,7 +132,12 @@ class ReadShort extends Component {
         content = <h1>SHORT STORY NOT FOUND</h1>;
       }
     }
-    return <div>{content}</div>;
+    return (
+      <div>
+        {content}
+        {short.allowComments && <ShortComments short={short}></ShortComments>}
+      </div>
+    );
   }
 }
 
