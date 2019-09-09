@@ -4,7 +4,8 @@ import {
   ADD_POEM,
   DELETE_POEM,
   POEM_NOT_FOUND,
-  GET_POEMS
+  GET_POEMS,
+  POEM_TRY
 } from "../actions/types";
 
 const initialState = {
@@ -48,6 +49,8 @@ export default function(state = initialState, action) {
         loading: false,
         poem: action.payload
       };
+    case POEM_TRY:
+      return state;
     default:
       return state;
   }

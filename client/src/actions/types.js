@@ -24,3 +24,5 @@ export const GET_SHORT_STORY = "GET_SHORT_STORY";
 export const ADD_SHORT_STORY = "ADD_SHORT_STORY";
 export const DELETE_SHORT_STORY = "DELETE_SHORT_STORY";
 export const SHORT_STORY_NOT_FOUND = "SHORT_STORY_NOT_FOUND";
+export const POEM_TRY = "POEM_TRY";
+export const SHORt_TRY = "SHORt_TRY";

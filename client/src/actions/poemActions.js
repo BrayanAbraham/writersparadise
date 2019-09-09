@@ -7,7 +7,8 @@ import {
   GET_POEM,
   DELETE_POEM,
   POEM_LOADING,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  POEM_TRY
 } from "./types";
 
 export const addPoem = (postData, history) => dispatch => {
@@ -153,6 +154,11 @@ export const likepoem = (id, option, user) => dispatch => {
     .then(res => {
       if (option === "user") dispatch(getPoemByUser(user));
       else if (option === "id") dispatch(getPoem(id));
+      else if (option === "try")
+        dispatch({
+          type: POEM_TRY,
+          payload: null
+        });
       else dispatch(getAllPoems());
     })
     .catch(err => {
@@ -170,6 +176,11 @@ export const dislikepoem = (id, option, user) => dispatch => {
     .then(res => {
       if (option === "user") dispatch(getPoemByUser(user));
       else if (option === "id") dispatch(getPoem(id));
+      else if (option === "try")
+        dispatch({
+          type: POEM_TRY,
+          payload: null
+        });
       else dispatch(getAllPoems());
     })
     .catch(err => {
