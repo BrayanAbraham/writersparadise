@@ -143,7 +143,7 @@ router.get("/:id", (req, res) => {
 
 router.get("/user/:user", (req, res) => {
   Book.find({ user: req.params.user })
-  .sort({ date: -1 })
+    .sort({ date: -1 })
     .populate("user", ["handle"])
     .then(book => res.json(book))
     .catch(err => res.status(404).json({ nobookfound: "Book not found" }));
@@ -164,9 +164,6 @@ router.delete(
           const delpath = "./public/uploads/" + book.image;
           console.log(delpath);
           fs.unlink(delpath, err => {
-            if (err) {
-              return res.status(404).json({ nobookfound: "Book not found" });
-            }
             book.remove().then(() => res.json({ success: true }));
           });
         })

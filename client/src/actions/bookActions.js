@@ -7,7 +7,8 @@ import {
   BOOK_LOADING,
   BOOK_NOT_FOUND,
   GET_BOOKS,
-  DELETE_BOOK
+  DELETE_BOOK,
+  BOOK_TRY
 } from "./types";
 
 export const addBook = (postData, history) => dispatch => {
@@ -41,7 +42,6 @@ export const getAllBooks = () => dispatch => {
       });
     })
     .catch(err => {
-      console.log(err.response.data);
       dispatch({
         type: BOOK_NOT_FOUND,
         payload: {}
@@ -294,12 +294,17 @@ export const likebook = (id, option, user) => dispatch => {
   axios
     .post(`/api/books/like/${id}`)
     .then(res => {
+      dispatch(clearErrors());
       if (option === "user") dispatch(getBooksByUser(user));
       else if (option === "id") dispatch(getBook(id));
+      else if (option === "try")
+        dispatch({
+          type: BOOK_TRY,
+          payload: null
+        });
       else dispatch(getAllBooks());
     })
     .catch(err => {
-      console.log(err);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
@@ -311,8 +316,14 @@ export const dislikebook = (id, option, user) => dispatch => {
   axios
     .post(`/api/books/dislike/${id}`)
     .then(res => {
+      dispatch(clearErrors());
       if (option === "user") dispatch(getBooksByUser(user));
       else if (option === "id") dispatch(getBook(id));
+      else if (option === "try")
+        dispatch({
+          type: BOOK_TRY,
+          payload: null
+        });
       else dispatch(getAllBooks());
     })
     .catch(err =>

@@ -7,6 +7,7 @@ export const GET_BOOK = "GET_BOOK";
 export const ADD_BOOK = "ADD_BOOK";
 export const DELETE_BOOK = "DELETE_BOOK";
 export const BOOK_NOT_FOUND = "BOOK_NOT_FOUND";
+export const BOOK_TRY = "BOOK_TRY";
 export const POEM_LOADING = "POEM_LOADING";
 export const GET_POEMS = "GET_POEMS";
 export const GET_POEM = "GET_POEM";

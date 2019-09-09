@@ -4,7 +4,8 @@ import {
   GET_BOOK,
   ADD_BOOK,
   DELETE_BOOK,
-  BOOK_NOT_FOUND
+  BOOK_NOT_FOUND,
+  BOOK_TRY
 } from "../actions/types";
 
 const initialState = {
@@ -49,6 +50,8 @@ export default function(state = initialState, action) {
         loading: false,
         book: action.payload
       };
+    case BOOK_TRY:
+      return state;
     default:
       return state;
   }
