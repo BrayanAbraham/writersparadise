@@ -7,7 +7,8 @@ import {
   GET_SHORT_STORY,
   DELETE_SHORT_STORY,
   SHORT_STORY_LOADING,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  SHORT_TRY
 } from "./types";
 
 export const addShortStory = (postData, history) => dispatch => {
@@ -19,7 +20,7 @@ export const addShortStory = (postData, history) => dispatch => {
         type: ADD_SHORT_STORY,
         payload: res.data
       });
-      history.push(`/shorts/${res.data._id}`);
+      history.push(`/short/${res.data._id}`);
     })
     .catch(err => {
       if (err.response !== undefined)
@@ -153,7 +154,13 @@ export const likeshort = (id, option, user) => dispatch => {
     .then(res => {
       if (option === "user") dispatch(getShortStoryByUser(user));
       else if (option === "id") dispatch(getShortStory(id));
-      else dispatch(getAllShortStories());
+      else if (option === "try") {
+        console.log("hi");
+        dispatch({
+          type: SHORT_TRY,
+          payload: null
+        });
+      } else dispatch(getAllShortStories());
     })
     .catch(err => {
       console.log(err);
@@ -170,6 +177,11 @@ export const dislikeshort = (id, option, user) => dispatch => {
     .then(res => {
       if (option === "user") dispatch(getShortStoryByUser(user));
       else if (option === "id") dispatch(getShortStory(id));
+      else if (option === "try")
+        dispatch({
+          type: SHORT_TRY,
+          payload: null
+        });
       else dispatch(getAllShortStories());
     })
     .catch(err => {

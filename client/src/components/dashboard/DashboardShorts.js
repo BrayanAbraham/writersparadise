@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import isEmpty from "../../validation/is-empty";
 import {
   getShortStoryByUser,
   likeshort,
   dislikeshort,
   deleteShortStory
 } from "../../actions/shortStoryActions";
+import DShort from "../short/DShort";
 
 class DashboardShorts extends Component {
   componentWillMount() {
@@ -67,70 +66,7 @@ class DashboardShorts extends Component {
   render() {
     const { shorts } = this.props.short;
     let usershorts = shorts.map((short, index) => (
-      <div className="short col-md-3 col-sm-6" key={index}>
-        <div className="card h-100">
-          {/* <Link to={`/short/${short._id}`}>{this.getImage(short.image)}</Link> */}
-          <div className="card-body text-center">
-            <Link to={`/short/${short._id}`} style={{ textDecoration: "none" }}>
-              <h5 className="card-title">{short.title}</h5>
-            </Link>
-            <div className="text-white">
-              <small className="bg-primary pr-2 pl-2 pt-1 pb-1">
-                {short.status}
-              </small>
-            </div>
-            <small>
-              {short.user.handle === this.props.auth.user.handle && (
-                <span>
-                  <span className="point">
-                    <Link
-                      to={`/edit-short/${short._id}`}
-                      className="likebutton"
-                      style={{ textDecoration: "none" }}
-                    >
-                      <i className="fa fa-pencil" /> Edit
-                    </Link>
-                  </span>
-                  <span
-                    className="point dislikebutton"
-                    onClick={this.deletePoem.bind(this, short._id)}
-                  >
-                    <i className="fa fa-times ml-3" /> Delete
-                  </span>
-                </span>
-              )}
-              {isEmpty(this.props.auth.user) && (
-                <span>
-                  <i className="fa fa-heart text-danger ml-2" />{" "}
-                  {short.likes.length}
-                </span>
-              )}
-            </small>
-            <br />
-            {!isEmpty(this.props.auth.user) && (
-              <small>
-                <button
-                  className="btn btn-light likebutton"
-                  onClick={this.like.bind(this, short._id)}
-                >
-                  <i className="fa fa-thumbs-up" /> Like
-                </button>
-                <i className="fa fa-heart text-danger ml-2" />{" "}
-                {short.likes.length}
-                <button
-                  className="btn btn-light dislikebutton"
-                  onClick={this.dislike.bind(this, short._id)}
-                >
-                  <i className="fa fa-thumbs-down" /> Dislike
-                </button>
-              </small>
-            )}
-            <p className="card-text">
-              {this.snip(this.stripTags(short.body), 20)}
-            </p>
-          </div>
-        </div>
-      </div>
+      <DShort short={short} key={index}></DShort>
     ));
     return <div className="row">{usershorts}</div>;
   }

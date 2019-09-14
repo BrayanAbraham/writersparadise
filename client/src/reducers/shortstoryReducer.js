@@ -4,7 +4,8 @@ import {
   GET_SHORT_STORY,
   ADD_SHORT_STORY,
   DELETE_SHORT_STORY,
-  SHORT_STORY_NOT_FOUND
+  SHORT_STORY_NOT_FOUND,
+  SHORT_TRY
 } from "../actions/types";
 
 const initialState = {
@@ -49,6 +50,8 @@ export default function(state = initialState, action) {
         loading: false,
         short: action.payload
       };
+    case SHORT_TRY:
+      return state;
     default:
       return state;
   }

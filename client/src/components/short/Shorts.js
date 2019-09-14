@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import isEmpty from "../../validation/is-empty";
 import Spinner from "../common/Spinner";
 import {
   getAllShortStories,
@@ -10,6 +8,7 @@ import {
   dislikeshort,
   deleteShortStory
 } from "../../actions/shortStoryActions";
+import CShort from "./CShort";
 
 class Shorts extends Component {
   componentDidMount() {
@@ -69,65 +68,7 @@ class Shorts extends Component {
     const { noshortstoryfound } = this.props.errors;
 
     let allpoems = shorts.map((poem, index) => (
-      <div className="poem col-md-3 col-sm-6" key={index}>
-        <div className="card h-100">
-          <div className="card-body text-center">
-            <Link to={`/short/${poem._id}`} style={{ textDecoration: "none" }}>
-              <h5 className="card-title">{poem.title}</h5>
-            </Link>
-            <div>By {poem.user.handle}</div>
-            <small>
-              {poem.user.handle === this.props.auth.user.handle && (
-                <span>
-                  <span className="point">
-                    <Link
-                      to={`/edit-short/${poem._id}`}
-                      className="likebutton"
-                      style={{ textDecoration: "none" }}
-                    >
-                      <i className="fa fa-pencil" /> Edit
-                    </Link>
-                  </span>
-                  <span
-                    className="point dislikebutton"
-                    onClick={this.deletepoem.bind(this, poem._id)}
-                  >
-                    <i className="fa fa-times ml-3" /> Delete
-                  </span>
-                </span>
-              )}
-              {isEmpty(this.props.auth.user) && (
-                <span>
-                  <i className="fa fa-heart text-danger ml-2" />{" "}
-                  {poem.likes.length}
-                </span>
-              )}
-            </small>
-            <br />
-            {!isEmpty(this.props.auth.user) && (
-              <small>
-                <button
-                  className="btn btn-light likebutton"
-                  onClick={this.like.bind(this, poem._id)}
-                >
-                  <i className="fa fa-thumbs-up" /> Like
-                </button>
-                <i className="fa fa-heart text-danger ml-2" />{" "}
-                {poem.likes.length}
-                <button
-                  className="btn btn-light dislikebutton"
-                  onClick={this.dislike.bind(this, poem._id)}
-                >
-                  <i className="fa fa-thumbs-down" /> Disike
-                </button>
-              </small>
-            )}
-            <p className="card-text">
-              {this.snip(this.stripTags(poem.body), 100)}
-            </p>
-          </div>
-        </div>
-      </div>
+      <CShort poem={poem} key={index}></CShort>
     ));
 
     let content;

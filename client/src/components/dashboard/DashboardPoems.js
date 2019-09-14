@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import isEmpty from "../../validation/is-empty";
 import { getPoemByUser } from "../../actions/poemActions";
 import DPoem from "../poem/DPoem";
 

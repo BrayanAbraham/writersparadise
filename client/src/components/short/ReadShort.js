@@ -113,6 +113,8 @@ class ReadShort extends Component {
                 >
                   {short.title}
                 </h1>
+                <div className="text-center">By {short.user.handle}</div>
+                <br />
                 <div className="text-center">
                   {writeroptions.edit}
                   {writeroptions.delete}
@@ -121,6 +123,7 @@ class ReadShort extends Component {
                   {short.likes.length}
                   {writeroptions.dislikebuttons}
                 </div>
+                <br />
                 <div className="text-justify text-center">
                   <div dangerouslySetInnerHTML={{ __html: short.body }} />
                 </div>
