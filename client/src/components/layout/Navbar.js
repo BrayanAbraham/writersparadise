@@ -93,7 +93,7 @@ class Navbar extends Component {
         <div className="container">
           <div className="navbar-header">
             <Link className="navbar-brand" to="/">
-              Project
+              Writer's Paradise
             </Link>
           </div>
           <button
@@ -138,7 +138,4 @@ Navbar.propTypes = {
 
 const mapStateToProps = state => ({ auth: state.auth });
 
-export default connect(
-  mapStateToProps,
-  { logoutUser }
-)(Navbar);
+export default connect(mapStateToProps, { logoutUser })(Navbar);
